@@ -29,14 +29,6 @@ namespace Client
                     Console.WriteLine("Сервер: {0}", request);
                 }
             }
-            catch (SocketException ex)
-            {
-                ExceptManager.Write(ex);
-            }
-            catch (InvalidOperationException ex)
-            {
-                ExceptManager.Write(ex);
-            }
             catch (Exception ex)
             {
                 ExceptManager.Write(ex);
