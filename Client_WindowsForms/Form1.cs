@@ -39,20 +39,18 @@ namespace Client_WindowsForms
 
         private void LoadSubsidiaryInCombobox()
         {
-            NetManager.Send(stream, string.Empty, NetManager.Commands.SubsidiaryLoad);
+            comboBoxSubsidiary.Items.Clear();
+            NetManager.Send(stream, string.Empty, CommandManager.Commands.SubsidiaryLoad);
             string input = NetManager.Receive(client, stream);
             comboBoxSubsidiary.Items.AddRange(NetManager.GetMessage(input).Split(NetManager.separator));
         }
 
         private void buttonSubsidiaryAdd_Click(object sender, EventArgs e)
         {
-            NetManager.Send(stream, textBoxSubsidiaryAdd.Text, NetManager.Commands.SubsidiaryAdd);
-
+            NetManager.Send(stream, textBoxSubsidiaryAdd.Text, CommandManager.Commands.SubsidiaryAdd);
             string input = NetManager.Receive(client, stream);
-            MessageBox.Show(NetManager.GetMessage(input));
-
-            comboBoxSubsidiary.Items.Clear();
             LoadSubsidiaryInCombobox();
+            MessageBox.Show(NetManager.GetMessage(input));
         }
     }
 }

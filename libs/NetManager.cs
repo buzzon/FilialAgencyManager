@@ -9,13 +9,6 @@ namespace Libs
 {
     public class NetManager
     {
-        public enum Commands
-        {
-            NULL,
-            SubsidiaryAdd,
-            SubsidiaryLoad,
-        }
-
         public const char separator = '|';
 
         public static void Disconnect(TcpClient client)
@@ -54,7 +47,7 @@ namespace Libs
             return receive.Split(separator)[0];
         }
 
-        public static void Send(NetworkStream stream, string message, Commands cmd = Commands.NULL)
+        public static void Send(NetworkStream stream, string message, CommandManager.Commands cmd = CommandManager.Commands.NULL)
         {
             byte[] bytes = Encoding.UTF8.GetBytes(string.Format("{0}{1}{2}", cmd.ToString(), separator, message));
             stream.Write(bytes, 0, bytes.Length);

@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandManager.cs" />
     <Compile Include="SubsidiaryManager.cs" />
     <Compile Include="NetManager.cs" />
     <Compile Include="ExceptManager.cs" />
