@@ -1,5 +1,6 @@
 ﻿using Libs;
 using System;
+using System.IO;
 using System.Net.Sockets;
 
 namespace Server
@@ -24,15 +25,32 @@ namespace Server
             switch (command)
             {
                 case nameof(NetManager.Commands.SubsidiaryAdd):
-                    SubsidiaryManager.Add(message);
-                    NetManager.Send(stream, String.Format("Добавлен новый филиал: {0}.", message));
-                    Console.WriteLine("{0}: Добавлен новый филиал: {1}.", clientIp, message);
+                    SubsidiaryAdd(stream, message);
+                    break;
+                case nameof(NetManager.Commands.SubsidiaryLoad):
+                    SubsidiaryLoad(stream);
                     break;
                 default:
                     break;
             }
         }
 
+        private static void SubsidiaryLoad(NetworkStream stream)
+        {
+            string Subsidiarys = "";
+            if (File.Exists(SubsidiaryManager.FilePath))
+                foreach (var item in File.ReadAllLines(SubsidiaryManager.FilePath))
+                    Subsidiarys += item + NetManager.separator;
+
+            NetManager.Send(stream, Subsidiarys);
+        }
+
+        private void SubsidiaryAdd(NetworkStream stream, string message)
+        {
+            SubsidiaryManager.Add(message);
+            NetManager.Send(stream, String.Format("Добавлен новый филиал: {0}.", message));
+            Console.WriteLine("{0}: Добавлен новый филиал: {1}.", clientIp, message);
+        }
 
         public void Process()
         {

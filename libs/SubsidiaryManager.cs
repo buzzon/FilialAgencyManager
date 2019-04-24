@@ -6,7 +6,7 @@ namespace Libs
 {
     public class SubsidiaryManager
     {
-        const string FilePath = "Subsidiary.ini";
+        public const string FilePath = "Subsidiary.ini";
 
         public static void Add(string subsidiaryName)
         {
