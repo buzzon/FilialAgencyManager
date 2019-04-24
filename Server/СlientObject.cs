@@ -4,20 +4,29 @@ using System.Net.Sockets;
 
 namespace Server
 {
-    class ClientManager
+    class СlientObject
     {
-        public TcpClient client;
-        public ClientManager(TcpClient tcpClient)
+        private TcpClient client;
+        private string clientIp;
+        public СlientObject(TcpClient tcpClient)
         {
             client = tcpClient;
+            clientIp = NetManager.GetClientIP(client);
         }
 
-        private void CommandHandler(string cmd)
+        private void CommandHandler(NetworkStream stream, string input)
         {
-            switch (cmd)
+            string message = NetManager.GetMessage(input);
+            string command = NetManager.GetCommand(input);
+
+            Console.WriteLine("{0}: {1}({2});", clientIp, command, message);
+
+            switch (command)
             {
-                case nameof(NetManager.Commands.ADD_Subsidiary):
-                    Console.WriteLine("сработала команда {0} ", cmd);
+                case nameof(NetManager.Commands.SubsidiaryAdd):
+                    SubsidiaryManager.Add(message);
+                    NetManager.Send(stream, String.Format("Добавлен новый филиал: {0}.", message));
+                    Console.WriteLine("{0}: Добавлен новый филиал: {1}.", clientIp, message);
                     break;
                 default:
                     break;
@@ -29,22 +38,14 @@ namespace Server
         {
             try
             {
-                NetworkStream stream = client.GetStream();
-                string clientIp = NetManager.GetClientIP(client);
                 Console.WriteLine("{0}: подключился.", clientIp);
-
                 while (true)
                 {
                     try
                     {
+                        NetworkStream stream = client.GetStream();
                         string input = NetManager.Receive(client, stream);
-                        string cmd = NetManager.GetCommand(input);
-                        string message = NetManager.GetMessage(input);
-
-                        Console.WriteLine("{0}: {1} {2}", clientIp, cmd, message);
-                        CommandHandler(cmd);
-
-                        NetManager.Send(stream, "Сообщение получено.");
+                        CommandHandler(stream, input);
                     }
                     catch (Exception)
                     {

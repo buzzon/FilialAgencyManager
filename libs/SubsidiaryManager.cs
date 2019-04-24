@@ -12,7 +12,7 @@ namespace Libs
         {
             try
             {
-                File.AppendAllText(FilePath, subsidiaryName);
+                File.AppendAllText(FilePath, subsidiaryName + "\n");
             }
             catch (Exception ex)
             {

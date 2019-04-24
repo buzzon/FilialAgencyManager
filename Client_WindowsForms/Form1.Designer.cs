@@ -35,12 +35,17 @@
             this.buttonDownloadAnnualReport = new System.Windows.Forms.Button();
             this.buttonSendQuarterlyReport = new System.Windows.Forms.Button();
             this.buttonSubsidiaryAdd = new System.Windows.Forms.Button();
+            this.groupBoxAdmin = new System.Windows.Forms.GroupBox();
+            this.textBoxSubsidiaryAdd = new System.Windows.Forms.TextBox();
+            this.groupBoxUser = new System.Windows.Forms.GroupBox();
+            this.groupBoxAdmin.SuspendLayout();
+            this.groupBoxUser.SuspendLayout();
             this.SuspendLayout();
             // 
             // LabelSubsidiary
             // 
             this.LabelSubsidiary.AutoSize = true;
-            this.LabelSubsidiary.Location = new System.Drawing.Point(12, 12);
+            this.LabelSubsidiary.Location = new System.Drawing.Point(6, 25);
             this.LabelSubsidiary.Name = "LabelSubsidiary";
             this.LabelSubsidiary.Size = new System.Drawing.Size(182, 18);
             this.LabelSubsidiary.TabIndex = 0;
@@ -49,15 +54,15 @@
             // comboBoxSubsidiary
             // 
             this.comboBoxSubsidiary.FormattingEnabled = true;
-            this.comboBoxSubsidiary.Location = new System.Drawing.Point(200, 9);
+            this.comboBoxSubsidiary.Location = new System.Drawing.Point(188, 22);
             this.comboBoxSubsidiary.Name = "comboBoxSubsidiary";
-            this.comboBoxSubsidiary.Size = new System.Drawing.Size(471, 26);
+            this.comboBoxSubsidiary.Size = new System.Drawing.Size(590, 26);
             this.comboBoxSubsidiary.TabIndex = 1;
             // 
             // labelQuarter
             // 
             this.labelQuarter.AutoSize = true;
-            this.labelQuarter.Location = new System.Drawing.Point(12, 46);
+            this.labelQuarter.Location = new System.Drawing.Point(6, 62);
             this.labelQuarter.Name = "labelQuarter";
             this.labelQuarter.Size = new System.Drawing.Size(70, 18);
             this.labelQuarter.TabIndex = 2;
@@ -71,7 +76,7 @@
             "2 - второй",
             "3 - третий",
             "4 - четвёртый"});
-            this.comboBoxQuarter.Location = new System.Drawing.Point(88, 43);
+            this.comboBoxQuarter.Location = new System.Drawing.Point(82, 59);
             this.comboBoxQuarter.Name = "comboBoxQuarter";
             this.comboBoxQuarter.Size = new System.Drawing.Size(106, 26);
             this.comboBoxQuarter.TabIndex = 3;
@@ -79,9 +84,9 @@
             // buttonDownloadAnnualReport
             // 
             this.buttonDownloadAnnualReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonDownloadAnnualReport.Location = new System.Drawing.Point(501, 43);
+            this.buttonDownloadAnnualReport.Location = new System.Drawing.Point(495, 59);
             this.buttonDownloadAnnualReport.Name = "buttonDownloadAnnualReport";
-            this.buttonDownloadAnnualReport.Size = new System.Drawing.Size(295, 26);
+            this.buttonDownloadAnnualReport.Size = new System.Drawing.Size(283, 26);
             this.buttonDownloadAnnualReport.TabIndex = 8;
             this.buttonDownloadAnnualReport.Text = "Запросить годовой отчет";
             this.buttonDownloadAnnualReport.UseVisualStyleBackColor = true;
@@ -89,36 +94,64 @@
             // buttonSendQuarterlyReport
             // 
             this.buttonSendQuarterlyReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonSendQuarterlyReport.Location = new System.Drawing.Point(200, 43);
+            this.buttonSendQuarterlyReport.Location = new System.Drawing.Point(194, 59);
             this.buttonSendQuarterlyReport.Name = "buttonSendQuarterlyReport";
             this.buttonSendQuarterlyReport.Size = new System.Drawing.Size(295, 26);
             this.buttonSendQuarterlyReport.TabIndex = 9;
-            this.buttonSendQuarterlyReport.Text = "Отправить данные за квартал";
+            this.buttonSendQuarterlyReport.Text = "Отправить квартальные";
             this.buttonSendQuarterlyReport.UseVisualStyleBackColor = true;
             // 
             // buttonSubsidiaryAdd
             // 
             this.buttonSubsidiaryAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonSubsidiaryAdd.Location = new System.Drawing.Point(677, 9);
+            this.buttonSubsidiaryAdd.Location = new System.Drawing.Point(6, 23);
             this.buttonSubsidiaryAdd.Name = "buttonSubsidiaryAdd";
-            this.buttonSubsidiaryAdd.Size = new System.Drawing.Size(119, 26);
+            this.buttonSubsidiaryAdd.Size = new System.Drawing.Size(176, 26);
             this.buttonSubsidiaryAdd.TabIndex = 10;
-            this.buttonSubsidiaryAdd.Text = "Добавить";
+            this.buttonSubsidiaryAdd.Text = "Добавить филиал";
             this.buttonSubsidiaryAdd.UseVisualStyleBackColor = true;
             this.buttonSubsidiaryAdd.Click += new System.EventHandler(this.buttonSubsidiaryAdd_Click);
+            // 
+            // groupBoxAdmin
+            // 
+            this.groupBoxAdmin.Controls.Add(this.textBoxSubsidiaryAdd);
+            this.groupBoxAdmin.Controls.Add(this.buttonSubsidiaryAdd);
+            this.groupBoxAdmin.Location = new System.Drawing.Point(12, 120);
+            this.groupBoxAdmin.Name = "groupBoxAdmin";
+            this.groupBoxAdmin.Size = new System.Drawing.Size(784, 262);
+            this.groupBoxAdmin.TabIndex = 11;
+            this.groupBoxAdmin.TabStop = false;
+            this.groupBoxAdmin.Text = "Aдминистрации";
+            // 
+            // textBoxSubsidiaryAdd
+            // 
+            this.textBoxSubsidiaryAdd.Location = new System.Drawing.Point(199, 23);
+            this.textBoxSubsidiaryAdd.Name = "textBoxSubsidiaryAdd";
+            this.textBoxSubsidiaryAdd.Size = new System.Drawing.Size(579, 24);
+            this.textBoxSubsidiaryAdd.TabIndex = 11;
+            // 
+            // groupBoxUser
+            // 
+            this.groupBoxUser.Controls.Add(this.LabelSubsidiary);
+            this.groupBoxUser.Controls.Add(this.comboBoxSubsidiary);
+            this.groupBoxUser.Controls.Add(this.buttonDownloadAnnualReport);
+            this.groupBoxUser.Controls.Add(this.buttonSendQuarterlyReport);
+            this.groupBoxUser.Controls.Add(this.labelQuarter);
+            this.groupBoxUser.Controls.Add(this.comboBoxQuarter);
+            this.groupBoxUser.Location = new System.Drawing.Point(12, 12);
+            this.groupBoxUser.Name = "groupBoxUser";
+            this.groupBoxUser.Size = new System.Drawing.Size(784, 102);
+            this.groupBoxUser.TabIndex = 12;
+            this.groupBoxUser.TabStop = false;
+            this.groupBoxUser.Text = "Пользователям";
             // 
             // FormLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(808, 81);
-            this.Controls.Add(this.buttonSubsidiaryAdd);
-            this.Controls.Add(this.buttonSendQuarterlyReport);
-            this.Controls.Add(this.buttonDownloadAnnualReport);
-            this.Controls.Add(this.comboBoxQuarter);
-            this.Controls.Add(this.labelQuarter);
-            this.Controls.Add(this.comboBoxSubsidiary);
-            this.Controls.Add(this.LabelSubsidiary);
+            this.ClientSize = new System.Drawing.Size(808, 394);
+            this.Controls.Add(this.groupBoxUser);
+            this.Controls.Add(this.groupBoxAdmin);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -127,8 +160,11 @@
             this.Name = "FormLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Лучший филиал";
+            this.groupBoxAdmin.ResumeLayout(false);
+            this.groupBoxAdmin.PerformLayout();
+            this.groupBoxUser.ResumeLayout(false);
+            this.groupBoxUser.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -141,6 +177,9 @@
         private System.Windows.Forms.Button buttonDownloadAnnualReport;
         private System.Windows.Forms.Button buttonSendQuarterlyReport;
         private System.Windows.Forms.Button buttonSubsidiaryAdd;
+        private System.Windows.Forms.GroupBox groupBoxAdmin;
+        private System.Windows.Forms.TextBox textBoxSubsidiaryAdd;
+        private System.Windows.Forms.GroupBox groupBoxUser;
     }
 }
 

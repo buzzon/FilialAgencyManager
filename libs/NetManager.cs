@@ -12,7 +12,7 @@ namespace Libs
         public enum Commands
         {
             NULL,
-            ADD_Subsidiary
+            SubsidiaryAdd
         }
 
         public const char separator = '|';

@@ -23,7 +23,7 @@ namespace Server
                 while (true)
                 {
                     TcpClient client = listener.AcceptTcpClient();
-                    ClientManager clientObject = new ClientManager(client);
+                    СlientObject clientObject = new СlientObject(client);
 
                     // создаем новый поток для обслуживания нового клиента
                     Thread clientThread = new Thread(new ThreadStart(clientObject.Process));

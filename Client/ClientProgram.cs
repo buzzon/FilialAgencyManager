@@ -22,6 +22,7 @@ namespace Client
                 while (true)
                 {
                     string message = Console.ReadLine();
+                    //NetManager.Send(stream, message, NetManager.Commands.SubsidiaryAdd);
                     NetManager.Send(stream, message);
 
                     string input = NetManager.Receive(client, stream);
