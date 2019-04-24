@@ -98,7 +98,7 @@
             this.buttonSendQuarterlyReport.Name = "buttonSendQuarterlyReport";
             this.buttonSendQuarterlyReport.Size = new System.Drawing.Size(295, 26);
             this.buttonSendQuarterlyReport.TabIndex = 9;
-            this.buttonSendQuarterlyReport.Text = "Отправить квартальные";
+            this.buttonSendQuarterlyReport.Text = "Отправить квартальный отчет";
             this.buttonSendQuarterlyReport.UseVisualStyleBackColor = true;
             // 
             // buttonSubsidiaryAdd
@@ -121,7 +121,7 @@
             this.groupBoxAdmin.Size = new System.Drawing.Size(784, 262);
             this.groupBoxAdmin.TabIndex = 11;
             this.groupBoxAdmin.TabStop = false;
-            this.groupBoxAdmin.Text = "Aдминистрации";
+            this.groupBoxAdmin.Text = "Для администрации";
             // 
             // textBoxSubsidiaryAdd
             // 
@@ -143,7 +143,7 @@
             this.groupBoxUser.Size = new System.Drawing.Size(784, 102);
             this.groupBoxUser.TabIndex = 12;
             this.groupBoxUser.TabStop = false;
-            this.groupBoxUser.Text = "Пользователям";
+            this.groupBoxUser.Text = "Для пользователей";
             // 
             // FormLogin
             // 
