@@ -34,6 +34,7 @@
             this.comboBoxQuarter = new System.Windows.Forms.ComboBox();
             this.buttonDownloadAnnualReport = new System.Windows.Forms.Button();
             this.buttonSendQuarterlyReport = new System.Windows.Forms.Button();
+            this.buttonSubsidiaryAdd = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // LabelSubsidiary
@@ -50,7 +51,7 @@
             this.comboBoxSubsidiary.FormattingEnabled = true;
             this.comboBoxSubsidiary.Location = new System.Drawing.Point(200, 9);
             this.comboBoxSubsidiary.Name = "comboBoxSubsidiary";
-            this.comboBoxSubsidiary.Size = new System.Drawing.Size(596, 26);
+            this.comboBoxSubsidiary.Size = new System.Drawing.Size(471, 26);
             this.comboBoxSubsidiary.TabIndex = 1;
             // 
             // labelQuarter
@@ -65,6 +66,11 @@
             // comboBoxQuarter
             // 
             this.comboBoxQuarter.FormattingEnabled = true;
+            this.comboBoxQuarter.Items.AddRange(new object[] {
+            "1 - первый",
+            "2 - второй",
+            "3 - третий",
+            "4 - четвёртый"});
             this.comboBoxQuarter.Location = new System.Drawing.Point(88, 43);
             this.comboBoxQuarter.Name = "comboBoxQuarter";
             this.comboBoxQuarter.Size = new System.Drawing.Size(106, 26);
@@ -90,11 +96,23 @@
             this.buttonSendQuarterlyReport.Text = "Отправить данные за квартал";
             this.buttonSendQuarterlyReport.UseVisualStyleBackColor = true;
             // 
+            // buttonSubsidiaryAdd
+            // 
+            this.buttonSubsidiaryAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonSubsidiaryAdd.Location = new System.Drawing.Point(677, 9);
+            this.buttonSubsidiaryAdd.Name = "buttonSubsidiaryAdd";
+            this.buttonSubsidiaryAdd.Size = new System.Drawing.Size(119, 26);
+            this.buttonSubsidiaryAdd.TabIndex = 10;
+            this.buttonSubsidiaryAdd.Text = "Добавить";
+            this.buttonSubsidiaryAdd.UseVisualStyleBackColor = true;
+            this.buttonSubsidiaryAdd.Click += new System.EventHandler(this.buttonSubsidiaryAdd_Click);
+            // 
             // FormLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(808, 81);
+            this.Controls.Add(this.buttonSubsidiaryAdd);
             this.Controls.Add(this.buttonSendQuarterlyReport);
             this.Controls.Add(this.buttonDownloadAnnualReport);
             this.Controls.Add(this.comboBoxQuarter);
@@ -122,6 +140,7 @@
         private System.Windows.Forms.ComboBox comboBoxQuarter;
         private System.Windows.Forms.Button buttonDownloadAnnualReport;
         private System.Windows.Forms.Button buttonSendQuarterlyReport;
+        private System.Windows.Forms.Button buttonSubsidiaryAdd;
     }
 }
 

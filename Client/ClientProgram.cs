@@ -12,7 +12,6 @@ namespace Client
 
         static void Main(string[] args)
         {
-            string userName = GetUsername();
             TcpClient client = null;
             try
             {
@@ -22,10 +21,10 @@ namespace Client
 
                 while (true)
                 {
-                    string message = GetMessage(userName);
+                    string message = Console.ReadLine();
                     NetManager.Send(stream, message);
 
-                    string request = NetManager.Receive(client, stream);
+                    string request = NetManager.Receive(client, stream).Split(NetManager.separator)[1];
                     Console.WriteLine("Сервер: {0}", request);
                 }
             }
@@ -37,12 +36,6 @@ namespace Client
             {
                 NetManager.Disconnect(client);
             }
-        }
-
-        private static string GetMessage(string userName)
-        {
-            Console.Write(userName + ": ");
-            return String.Format("{0}: {1}", userName, Console.ReadLine()); ;
         }
 
         private static string GetUsername()

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Libs;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -7,6 +9,14 @@ namespace Libs
 {
     public class NetManager
     {
+        public enum Commands
+        {
+            NULL,
+            ADD_Subsidiary
+        }
+
+        public const char separator = '|';
+
         public static void Disconnect(TcpClient client)
         {
             if (client != null)
@@ -33,10 +43,20 @@ namespace Libs
             return Encoding.UTF8.GetString(bytes, 0, bytesRead);
         }
 
-        public static void Send(NetworkStream stream, string message)
+        public static string GetMessage(string receive)
         {
-            byte[] sendBytes = Encoding.UTF8.GetBytes(message);
-            stream.Write(sendBytes, 0, sendBytes.Length);
+            return receive.Substring(GetCommand(receive).Length + 1);
+        }
+
+        public static string GetCommand(string receive)
+        {
+            return receive.Split(separator)[0];
+        }
+
+        public static void Send(NetworkStream stream, string message, Commands cmd = Commands.NULL)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(string.Format("{0}{1}{2}", cmd.ToString(), separator, message));
+            stream.Write(bytes, 0, bytes.Length);
         }
     }
 }

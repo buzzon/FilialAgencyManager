@@ -16,5 +16,10 @@ namespace Client_WindowsForms
         {
             InitializeComponent();
         }
+
+        private void buttonSubsidiaryAdd_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

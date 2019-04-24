@@ -24,8 +24,11 @@ namespace Server
                 {
                     try
                     {
-                        string message = NetManager.Receive(client, stream);
-                        Console.WriteLine(message);
+                        string input = NetManager.Receive(client, stream);
+                        string cmd = NetManager.GetCommand(input);
+                        string message = NetManager.GetMessage(input);
+
+                        Console.WriteLine("{0} {1}", cmd, message);
                         NetManager.Send(stream, "Сообщение получено.");
                     }
                     catch (Exception)
