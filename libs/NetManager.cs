@@ -1,4 +1,6 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 
 namespace Libs
@@ -17,6 +19,11 @@ namespace Libs
                 {
                     client.Close();
                 }
+        }
+
+        public static string GetClientIP(TcpClient client)
+        {
+            return ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
         }
 
         public static string Receive(TcpClient client, NetworkStream stream)
