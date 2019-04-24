@@ -24,8 +24,8 @@ namespace Client
                     string message = Console.ReadLine();
                     NetManager.Send(stream, message);
 
-                    string request = NetManager.Receive(client, stream).Split(NetManager.separator)[1];
-                    Console.WriteLine("Сервер: {0}", request);
+                    string input = NetManager.Receive(client, stream);
+                    Console.WriteLine("Сервер: {0}", NetManager.GetMessage(input));
                 }
             }
             catch (Exception ex)

@@ -1,6 +1,5 @@
 ﻿using Libs;
 using System;
-using System.Net;
 using System.Net.Sockets;
 
 namespace Server
@@ -13,12 +12,26 @@ namespace Server
             client = tcpClient;
         }
 
+        private void CommandHandler(string cmd)
+        {
+            switch (cmd)
+            {
+                case nameof(NetManager.Commands.ADD_Subsidiary):
+                    Console.WriteLine("сработала команда {0} ", cmd);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
         public void Process()
         {
             try
             {
                 NetworkStream stream = client.GetStream();
-                Console.WriteLine("{0} подключился.", NetManager.GetClientIP(client));
+                string clientIp = NetManager.GetClientIP(client);
+                Console.WriteLine("{0}: подключился.", clientIp);
 
                 while (true)
                 {
@@ -28,15 +41,16 @@ namespace Server
                         string cmd = NetManager.GetCommand(input);
                         string message = NetManager.GetMessage(input);
 
-                        Console.WriteLine("{0} {1}", cmd, message);
+                        Console.WriteLine("{0}: {1} {2}", clientIp, cmd, message);
+                        CommandHandler(cmd);
+
                         NetManager.Send(stream, "Сообщение получено.");
                     }
                     catch (Exception)
                     {
-                        Console.WriteLine("{0} отключился.", NetManager.GetClientIP(client));
+                        Console.WriteLine("{0}: отключился.", clientIp);
                         break;
                     }
-
                 }
             }
             catch (Exception ex)
