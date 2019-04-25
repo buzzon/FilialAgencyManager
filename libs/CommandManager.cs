@@ -10,7 +10,8 @@ namespace Libs
         {
             NULL,
             SubsidiaryAdd,
-            SubsidiaryLoad
+            SubsidiaryLoad,
+            QuaterDataSave
         }
 
 
