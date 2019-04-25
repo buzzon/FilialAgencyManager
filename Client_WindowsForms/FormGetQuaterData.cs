@@ -14,16 +14,18 @@ namespace Client_WindowsForms
     public partial class FormGetQuaterData : Form
     {
         private TableManager tableManager;
+        private string subsidiary;
 
         System.Net.Sockets.TcpClient client;
         System.Net.Sockets.NetworkStream stream;
 
-        public FormGetQuaterData(System.Net.Sockets.TcpClient client, string Subsidiary)
+        public FormGetQuaterData(System.Net.Sockets.TcpClient client, string subsidiary)
         {
             InitializeComponent();
 
             this.client = client;
             this.stream = client.GetStream();
+            this.subsidiary = subsidiary;
 
             tableManager = new TableManager(Tables);
             TableManager.InitializeTables(Tables);
@@ -59,7 +61,16 @@ namespace Client_WindowsForms
 
         private void buttonSend_Click(object sender, EventArgs e)
         {
-            NetManager.Send(stream, "", CommandManager.Commands.QuaterDataSave);
+            string serializedData = "";
+            try
+            {
+                NetManager.Send(stream, subsidiary + NetManager.separator + comboBoxQuarter.SelectedItem.ToString() + NetManager.separator + serializedData, CommandManager.Commands.QuaterDataSave);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
     }
 }

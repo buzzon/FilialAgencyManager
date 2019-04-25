@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuaterDataSerialize.cs" />
     <Compile Include="TableManager.cs" />
     <EmbeddedResource Include="FormGetQuaterData.resx">
       <DependentUpon>FormGetQuaterData.cs</DependentUpon>

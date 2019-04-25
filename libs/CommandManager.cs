@@ -30,9 +30,17 @@ namespace Libs
                 case nameof(Commands.SubsidiaryLoad):
                     SubsidiaryLoad(stream);
                     break;
+                case nameof(Commands.QuaterDataSave):
+                    QuaterDataSave(stream, message, clientIp);
+                    break;
                 default:
                     break;
             }
+        }
+
+        private static void QuaterDataSave(NetworkStream stream, string message, string clientIp)
+        {
+
         }
 
         private static void SubsidiaryLoad(NetworkStream stream)
