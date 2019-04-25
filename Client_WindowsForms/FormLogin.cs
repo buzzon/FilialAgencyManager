@@ -47,7 +47,7 @@ namespace Client_WindowsForms
 
         private void buttonSendQuarterlyReport_Click(object sender, EventArgs e)
         {
-            using (FormGetQuaterData getQuaterData = new FormGetQuaterData())
+            using (FormGetQuaterData getQuaterData = new FormGetQuaterData(client))
             {
                 getQuaterData.ShowDialog(this);
             }

@@ -14,9 +14,15 @@ namespace Client_WindowsForms
     {
         private TableManager tableManager;
 
-        public FormGetQuaterData()
+        System.Net.Sockets.TcpClient client;
+        System.Net.Sockets.NetworkStream stream;
+
+        public FormGetQuaterData(System.Net.Sockets.TcpClient client)
         {
             InitializeComponent();
+
+            this.client = client;
+            this.stream = client.GetStream();
 
             tableManager = new TableManager(Tables);
             TableManager.InitializeTables(Tables);
