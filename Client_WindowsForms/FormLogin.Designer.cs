@@ -30,8 +30,6 @@
         {
             this.LabelSubsidiary = new System.Windows.Forms.Label();
             this.comboBoxSubsidiary = new System.Windows.Forms.ComboBox();
-            this.labelQuarter = new System.Windows.Forms.Label();
-            this.comboBoxQuarter = new System.Windows.Forms.ComboBox();
             this.buttonDownloadAnnualReport = new System.Windows.Forms.Button();
             this.buttonSendQuarterlyReport = new System.Windows.Forms.Button();
             this.buttonSubsidiaryAdd = new System.Windows.Forms.Button();
@@ -59,34 +57,12 @@
             this.comboBoxSubsidiary.Size = new System.Drawing.Size(590, 26);
             this.comboBoxSubsidiary.TabIndex = 1;
             // 
-            // labelQuarter
-            // 
-            this.labelQuarter.AutoSize = true;
-            this.labelQuarter.Location = new System.Drawing.Point(6, 62);
-            this.labelQuarter.Name = "labelQuarter";
-            this.labelQuarter.Size = new System.Drawing.Size(70, 18);
-            this.labelQuarter.TabIndex = 2;
-            this.labelQuarter.Text = "Квартал:";
-            // 
-            // comboBoxQuarter
-            // 
-            this.comboBoxQuarter.FormattingEnabled = true;
-            this.comboBoxQuarter.Items.AddRange(new object[] {
-            "1 - первый",
-            "2 - второй",
-            "3 - третий",
-            "4 - четвёртый"});
-            this.comboBoxQuarter.Location = new System.Drawing.Point(82, 59);
-            this.comboBoxQuarter.Name = "comboBoxQuarter";
-            this.comboBoxQuarter.Size = new System.Drawing.Size(106, 26);
-            this.comboBoxQuarter.TabIndex = 3;
-            // 
             // buttonDownloadAnnualReport
             // 
             this.buttonDownloadAnnualReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonDownloadAnnualReport.Location = new System.Drawing.Point(495, 59);
+            this.buttonDownloadAnnualReport.Location = new System.Drawing.Point(398, 59);
             this.buttonDownloadAnnualReport.Name = "buttonDownloadAnnualReport";
-            this.buttonDownloadAnnualReport.Size = new System.Drawing.Size(283, 26);
+            this.buttonDownloadAnnualReport.Size = new System.Drawing.Size(380, 26);
             this.buttonDownloadAnnualReport.TabIndex = 8;
             this.buttonDownloadAnnualReport.Text = "Запросить годовой отчет";
             this.buttonDownloadAnnualReport.UseVisualStyleBackColor = true;
@@ -94,12 +70,13 @@
             // buttonSendQuarterlyReport
             // 
             this.buttonSendQuarterlyReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonSendQuarterlyReport.Location = new System.Drawing.Point(194, 59);
+            this.buttonSendQuarterlyReport.Location = new System.Drawing.Point(9, 59);
             this.buttonSendQuarterlyReport.Name = "buttonSendQuarterlyReport";
-            this.buttonSendQuarterlyReport.Size = new System.Drawing.Size(295, 26);
+            this.buttonSendQuarterlyReport.Size = new System.Drawing.Size(380, 26);
             this.buttonSendQuarterlyReport.TabIndex = 9;
             this.buttonSendQuarterlyReport.Text = "Отправить квартальный отчет";
             this.buttonSendQuarterlyReport.UseVisualStyleBackColor = true;
+            this.buttonSendQuarterlyReport.Click += new System.EventHandler(this.buttonSendQuarterlyReport_Click);
             // 
             // buttonSubsidiaryAdd
             // 
@@ -136,8 +113,6 @@
             this.groupBoxUser.Controls.Add(this.comboBoxSubsidiary);
             this.groupBoxUser.Controls.Add(this.buttonDownloadAnnualReport);
             this.groupBoxUser.Controls.Add(this.buttonSendQuarterlyReport);
-            this.groupBoxUser.Controls.Add(this.labelQuarter);
-            this.groupBoxUser.Controls.Add(this.comboBoxQuarter);
             this.groupBoxUser.Location = new System.Drawing.Point(12, 12);
             this.groupBoxUser.Name = "groupBoxUser";
             this.groupBoxUser.Size = new System.Drawing.Size(784, 102);
@@ -172,8 +147,6 @@
 
         private System.Windows.Forms.Label LabelSubsidiary;
         private System.Windows.Forms.ComboBox comboBoxSubsidiary;
-        private System.Windows.Forms.Label labelQuarter;
-        private System.Windows.Forms.ComboBox comboBoxQuarter;
         private System.Windows.Forms.Button buttonDownloadAnnualReport;
         private System.Windows.Forms.Button buttonSendQuarterlyReport;
         private System.Windows.Forms.Button buttonSubsidiaryAdd;

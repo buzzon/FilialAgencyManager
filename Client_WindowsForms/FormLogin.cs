@@ -44,5 +44,13 @@ namespace Client_WindowsForms
             LoadSubsidiaryInCombobox();
             MessageBox.Show(NetManager.GetMessage(input));
         }
+
+        private void buttonSendQuarterlyReport_Click(object sender, EventArgs e)
+        {
+            using (FormGetQuaterData getQuaterData = new FormGetQuaterData())
+            {
+                getQuaterData.ShowDialog(this);
+            }
+        }
     }
 }
