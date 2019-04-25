@@ -39,17 +39,37 @@ namespace Client_WindowsForms
 
         private void buttonSubsidiaryAdd_Click(object sender, EventArgs e)
         {
-            NetManager.Send(stream, textBoxSubsidiaryAdd.Text, CommandManager.Commands.SubsidiaryAdd);
-            string input = NetManager.Receive(client, stream);
-            LoadSubsidiaryInCombobox();
-            MessageBox.Show(NetManager.GetMessage(input));
+            if (stream != null)
+            {
+                try
+                {
+
+                    NetManager.Send(stream, textBoxSubsidiaryAdd.Text, CommandManager.Commands.SubsidiaryAdd);
+                    string input = NetManager.Receive(client, stream);
+                    LoadSubsidiaryInCombobox();
+                    MessageBox.Show(NetManager.GetMessage(input));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
         }
 
         private void buttonSendQuarterlyReport_Click(object sender, EventArgs e)
         {
-            using (FormGetQuaterData getQuaterData = new FormGetQuaterData(client))
+            if (stream != null)
             {
-                getQuaterData.ShowDialog(this);
+                try
+                {
+
+                    FormGetQuaterData getQuaterData = new FormGetQuaterData(client, comboBoxSubsidiary.SelectedItem.ToString());
+                    getQuaterData.ShowDialog(this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
     }

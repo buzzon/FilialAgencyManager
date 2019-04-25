@@ -21,9 +21,11 @@ namespace Client
 
                 while (true)
                 {
-                    string message = Console.ReadLine();
-                    //NetManager.Send(stream, message, NetManager.Commands.SubsidiaryAdd);
-                    NetManager.Send(stream, message);
+                    string output = Console.ReadLine();
+
+                    CommandManager.Commands command = CommandManager.Commands.NULL;
+                    if (Enum.TryParse(NetManager.GetCommand(output), true, out command))
+                    NetManager.Send(stream, NetManager.GetMessage(output), command);
 
                     string input = NetManager.Receive(client, stream);
                     Console.WriteLine("Сервер: {0}", NetManager.GetMessage(input));

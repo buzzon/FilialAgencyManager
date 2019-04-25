@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Libs;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,7 +18,7 @@ namespace Client_WindowsForms
         System.Net.Sockets.TcpClient client;
         System.Net.Sockets.NetworkStream stream;
 
-        public FormGetQuaterData(System.Net.Sockets.TcpClient client)
+        public FormGetQuaterData(System.Net.Sockets.TcpClient client, string Subsidiary)
         {
             InitializeComponent();
 
@@ -58,7 +59,7 @@ namespace Client_WindowsForms
 
         private void buttonSend_Click(object sender, EventArgs e)
         {
-
+            NetManager.Send(stream, "", CommandManager.Commands.QuaterDataSave);
         }
     }
 }

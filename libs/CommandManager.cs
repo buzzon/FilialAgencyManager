@@ -47,9 +47,12 @@ namespace Libs
 
         private static void SubsidiaryAdd(NetworkStream stream, string message, string clientIp)
         {
-            SubsidiaryManager.Add(message);
-            NetManager.Send(stream, String.Format("Добавлен новый филиал: {0}.", message));
-            Console.WriteLine("{0}: Добавлен новый филиал: {1}.", clientIp, message);
+            if (message != "")
+            {
+                SubsidiaryManager.Add(message);
+                NetManager.Send(stream, String.Format("Добавлен новый филиал: {0}.", message));
+                Console.WriteLine("{0}: Добавлен новый филиал: {1}.", clientIp, message);
+            }
         }
     }
 }
