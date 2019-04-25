@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net.Sockets;
+using System.Text;
 
 namespace Libs
 {
@@ -40,7 +41,15 @@ namespace Libs
 
         private static void QuaterDataSave(NetworkStream stream, string message, string clientIp)
         {
+            string subsidiary = message.Split(NetManager.separator)[0];
+            string quarter = message.Split(NetManager.separator)[1];
+            byte[] quaterData = Encoding.UTF8.GetBytes(message.Split(NetManager.separator)[2]);
+            MemoryStream memoryStream = new MemoryStream(quaterData);
+            QuaterDataSerialize quaterDataSerialize = new QuaterDataSerialize(null, null);
+            quaterDataSerialize.Deserialize(memoryStream);
 
+            NetManager.Send(stream, String.Format("{0}: Получены данные {1} за {2} квартал.", clientIp, subsidiary, quarter));
+            Console.WriteLine("{0}: Получены данные {1} за {2} квартал.", clientIp, subsidiary, quarter);
         }
 
         private static void SubsidiaryLoad(NetworkStream stream)

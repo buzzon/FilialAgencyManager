@@ -64,7 +64,7 @@ namespace Client_WindowsForms
             QuaterDataSerialize quaterData = new QuaterDataSerialize(Tables, Titles);
             try
             {
-                NetManager.Send(stream, subsidiary + NetManager.separator + comboBoxQuarter.SelectedItem.ToString() + NetManager.separator + quaterData.SerializeToString(),
+                NetManager.Send(stream, subsidiary + NetManager.separator + comboBoxQuarter.SelectedItem.ToString() + NetManager.separator + quaterData.SerializeToString(quaterData),
                     CommandManager.Commands.QuaterDataSave);
             }
             catch (Exception ex)

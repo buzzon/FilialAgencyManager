@@ -1,31 +1,36 @@
 ﻿using System;
+using System.Data;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Client_WindowsForms
+namespace Libs
 {
     [Serializable]
     public class QuaterDataSerialize
     {
-        public DataGridView[] Tables { get; private set; }
+        public DataTable[] Tables { get; private set; }
         public Label[] Titles { get; private set; }
 
         public QuaterDataSerialize(DataGridView[] Tables, Label[] Titles)
         {
-            this.Tables = Tables;
+            this.Tables = new DataTable[Tables.Length];
+            for (int i = 0; i < Tables.Length; i++)
+            {
+                this.Tables[i] = (DataTable)Tables[i].DataSource;
+            }
             this.Titles = Titles;
         }
 
-        public MemoryStream Serialize()
+        public MemoryStream Serialize(QuaterDataSerialize quaterData)
         {
             MemoryStream data = new MemoryStream();
             BinaryFormatter binaryFormatter = new BinaryFormatter();
             try
             {
-                binaryFormatter.Serialize(data, this);
+                binaryFormatter.Serialize(data, quaterData);
                 return data;
             }
             catch (SerializationException ex)
@@ -35,9 +40,9 @@ namespace Client_WindowsForms
             }
         }
 
-        public string SerializeToString()
+        public string SerializeToString(QuaterDataSerialize quaterData)
         {
-            MemoryStream data = Serialize();
+            MemoryStream data = Serialize(quaterData);
             byte[] bytes = new byte[data.Length];
             if (data.Length <= Int32.MaxValue)
             {
