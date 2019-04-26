@@ -11,26 +11,42 @@ namespace Libs
     [Serializable]
     public class QuaterDataSerialize
     {
-        public DataTable[] Tables { get; private set; }
+        public DataTable[] Tables { get; set; }
         public Label[] Titles { get; private set; }
 
-        public QuaterDataSerialize(DataGridView[] Tables, Label[] Titles)
+        public QuaterDataSerialize(DataGridView[] DataGridTables, Label[] Titles)
         {
-            this.Tables = new DataTable[Tables.Length];
+            //DataGridView[] to DataTable[]
+            Tables = new DataTable[DataGridTables.Length];
             for (int i = 0; i < Tables.Length; i++)
             {
-                this.Tables[i] = (DataTable)Tables[i].DataSource;
+                Tables[i] = new DataTable();
             }
+            for (int i = 0; i < DataGridTables.Length; i++)
+                foreach (DataGridViewColumn col in DataGridTables[i].Columns)
+                    Tables[i].Columns.Add(col.Name);
+
+            for (int i = 0; i < Tables.Length; i++)
+                foreach (DataGridViewRow row in DataGridTables[i].Rows)
+                {
+                    DataRow dRow = Tables[i].NewRow();
+                    foreach (DataGridViewCell cell in row.Cells)
+                    {
+                        dRow[cell.ColumnIndex] = cell.Value;
+                    }
+                    this.Tables[i].Rows.Add(dRow);
+                }
+
             this.Titles = Titles;
         }
 
-        public MemoryStream Serialize(QuaterDataSerialize quaterData)
+        public MemoryStream Serialize()
         {
             MemoryStream data = new MemoryStream();
             BinaryFormatter binaryFormatter = new BinaryFormatter();
             try
             {
-                binaryFormatter.Serialize(data, quaterData);
+                binaryFormatter.Serialize(data, this);
                 return data;
             }
             catch (SerializationException ex)
@@ -40,9 +56,9 @@ namespace Libs
             }
         }
 
-        public string SerializeToString(QuaterDataSerialize quaterData)
+        public string SerializeToString()
         {
-            MemoryStream data = Serialize(quaterData);
+            MemoryStream data = Serialize();
             byte[] bytes = new byte[data.Length];
             if (data.Length <= Int32.MaxValue)
             {

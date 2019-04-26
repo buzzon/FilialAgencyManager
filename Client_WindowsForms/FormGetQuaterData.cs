@@ -1,12 +1,5 @@
 ﻿using Libs;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Client_WindowsForms
@@ -64,7 +57,7 @@ namespace Client_WindowsForms
             QuaterDataSerialize quaterData = new QuaterDataSerialize(Tables, Titles);
             try
             {
-                NetManager.Send(stream, subsidiary + NetManager.separator + comboBoxQuarter.SelectedItem.ToString() + NetManager.separator + quaterData.SerializeToString(quaterData),
+                NetManager.Send(stream, subsidiary + NetManager.separator + comboBoxQuarter.SelectedItem.ToString() + NetManager.separator + quaterData.SerializeToString(),
                     CommandManager.Commands.QuaterDataSave);
             }
             catch (Exception ex)

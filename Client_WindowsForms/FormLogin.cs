@@ -62,7 +62,6 @@ namespace Client_WindowsForms
             {
                 try
                 {
-
                     FormGetQuaterData getQuaterData = new FormGetQuaterData(client, comboBoxSubsidiary.SelectedItem.ToString());
                     getQuaterData.ShowDialog(this);
                 }
