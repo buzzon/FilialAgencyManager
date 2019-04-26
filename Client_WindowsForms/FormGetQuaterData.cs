@@ -54,11 +54,13 @@ namespace Client_WindowsForms
 
         private void buttonSend_Click(object sender, EventArgs e)
         {
-            QuaterDataSerialize quaterData = new QuaterDataSerialize(Tables, Titles);
+            QuaterDataSerialize quaterData = new QuaterDataSerialize(subsidiary, comboBoxQuarter.SelectedItem.ToString() , Tables, Titles);
+            byte[] vs = quaterData.Serialize();
+            QuaterDataSerialize quaterDataDes = new QuaterDataSerialize();
+            quaterDataDes = quaterDataDes.Deserialize(vs);
             try
             {
-                NetManager.Send(stream, subsidiary + NetManager.separator + comboBoxQuarter.SelectedItem.ToString() + NetManager.separator + quaterData.SerializeToString(),
-                    CommandManager.Commands.QuaterDataSave);
+                NetManager.Send(stream, quaterData.Serialize(), CommandManager.Commands.QuaterDataSave);
             }
             catch (Exception ex)
             {

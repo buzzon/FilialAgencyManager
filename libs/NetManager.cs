@@ -30,8 +30,20 @@ namespace Libs
         public static string Receive(TcpClient client, NetworkStream stream)
         {
             byte[] bytes = new byte[client.ReceiveBufferSize];
-            int bytesRead = stream.Read(bytes, 0, client.ReceiveBufferSize);
+            int bytesRead = stream.Read(bytes, 0, bytes.Length);
             return Encoding.UTF8.GetString(bytes, 0, bytesRead);
+        }
+
+        public static byte[] ReceiveBytes(TcpClient client, NetworkStream stream)
+        {
+            byte[] bytes = new byte[client.ReceiveBufferSize];
+            int bytesRead = stream.Read(bytes, 0, bytes.Length);
+
+            byte[] newArray = new byte[bytesRead];
+            for (int i = 0; i < bytesRead; i++)
+                newArray[i] = bytes[i];
+
+            return newArray;
         }
 
         public static string GetMessage(string receive)
@@ -48,6 +60,27 @@ namespace Libs
         {
             byte[] bytes = Encoding.UTF8.GetBytes(string.Format("{0}{1}{2}", cmd.ToString(), separator, message));
             stream.Write(bytes, 0, bytes.Length);
+        }
+
+        public static void Send(NetworkStream stream, byte[] bytes, CommandManager.Commands cmd = CommandManager.Commands.NULL)
+        {
+            byte[] bytesCommand = Encoding.UTF8.GetBytes(string.Format("{0}{1}", cmd.ToString(), separator));
+
+            byte[] bArray = addByteToArray(bytesCommand, bytes);
+            stream.Write(bArray, 0, bArray.Length);
+        }
+
+        public static byte[] addByteToArray(byte[] first, byte[] second)
+        {
+            byte[] newArray = new byte[first.Length + second.Length];
+
+            for (int i = 0; i < first.Length; i++)
+                newArray[i] = first[i];
+
+            for (int i = first.Length; i < second.Length; i++)
+                newArray[i] = second[i];
+
+            return newArray;
         }
     }
 }

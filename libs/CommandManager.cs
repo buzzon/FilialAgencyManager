@@ -16,12 +16,11 @@ namespace Libs
         }
 
 
-        public static void CommandHandler(NetworkStream stream, string input, string clientIp)
+        public static void CommandHandler(NetworkStream stream, byte[] input, string clientIp)
         {
-            string message = NetManager.GetMessage(input);
-            string command = NetManager.GetCommand(input);
-
-            Console.WriteLine("{0}: {1}({2});", clientIp, command, message);
+            string strInput = Encoding.UTF8.GetString(input);
+            string message = NetManager.GetMessage(strInput);
+            string command = NetManager.GetCommand(strInput);
 
             switch (command)
             {
@@ -32,24 +31,30 @@ namespace Libs
                     SubsidiaryLoad(stream);
                     break;
                 case nameof(Commands.QuaterDataSave):
-                    QuaterDataSave(stream, message, clientIp);
+                    QuaterDataSave(stream, input, clientIp);
                     break;
                 default:
+                    Console.WriteLine("{0}: {1}({2});", clientIp, command, message);
                     break;
             }
         }
 
-        private static void QuaterDataSave(NetworkStream stream, string message, string clientIp)
+        private static void QuaterDataSave(NetworkStream stream, byte[] bytes , string clientIp)
         {
-            string subsidiary = message.Split(NetManager.separator)[0];
-            string quarter = message.Split(NetManager.separator)[1];
-            byte[] quaterData = Encoding.UTF8.GetBytes(message.Split(NetManager.separator)[2]);
-            MemoryStream memoryStream = new MemoryStream(quaterData);
-            QuaterDataSerialize quaterDataSerialize = new QuaterDataSerialize(null, null);
-            quaterDataSerialize.Deserialize(memoryStream);
+            string command = NetManager.GetCommand(Encoding.UTF8.GetString(bytes));
+            int commandByteCount = Encoding.UTF8.GetByteCount(command) + 1 ;
 
-            NetManager.Send(stream, String.Format("{0}: Получены данные {1} за {2} квартал.", clientIp, subsidiary, quarter));
-            Console.WriteLine("{0}: Получены данные {1} за {2} квартал.", clientIp, subsidiary, quarter);
+            byte[] dataBytes = new byte[bytes.Length - commandByteCount];
+
+            for (int i = 0; i < dataBytes.Length; i++)
+                dataBytes[i] = bytes[i + commandByteCount];
+
+
+            QuaterDataSerialize quaterDataSerialize = new QuaterDataSerialize();
+            quaterDataSerialize = quaterDataSerialize.Deserialize(dataBytes);
+
+            NetManager.Send(stream, String.Format("{0}: Получены данные \"{1}\" за {2} квартал.", clientIp, quaterDataSerialize.subsidiary, quaterDataSerialize.quater));
+            Console.WriteLine("{0}: Получены данные \"{1}\" за {2} квартал.", clientIp, quaterDataSerialize.subsidiary, quaterDataSerialize.quater);
         }
 
         private static void SubsidiaryLoad(NetworkStream stream)

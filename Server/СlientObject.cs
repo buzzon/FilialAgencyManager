@@ -24,7 +24,7 @@ namespace Server
                     try
                     {
                         NetworkStream stream = client.GetStream();
-                        string input = NetManager.Receive(client, stream);
+                        byte[] input = NetManager.ReceiveBytes(client, stream);
                         CommandManager.CommandHandler(stream, input, clientIp);
                     }
                     catch (Exception)
