@@ -27,11 +27,14 @@ namespace Libs
             return ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
         }
 
-        public static string Receive(TcpClient client, NetworkStream stream)
+        public static string ToString(byte[] bytes)
         {
-            byte[] bytes = new byte[client.ReceiveBufferSize];
-            int bytesRead = stream.Read(bytes, 0, bytes.Length);
-            return Encoding.UTF8.GetString(bytes, 0, bytesRead);
+            return Encoding.UTF8.GetString(bytes);
+        }
+
+        public static byte[] ToBytes(string messgae)
+        {
+            return Encoding.UTF8.GetBytes(messgae);
         }
 
         public static byte[] ReceiveBytes(TcpClient client, NetworkStream stream)
@@ -46,39 +49,30 @@ namespace Libs
             return newArray;
         }
 
-        public static string GetMessage(string receive)
+        public static byte[] GetData(byte[] array)
         {
-            return receive.Substring(GetCommand(receive).Length + 1);
+            byte[] newArray = new byte[array.Length - 1];
+
+            for (int i = 0; i < newArray.Length; i++)
+                newArray[i] = array[i + 1];
+
+            return newArray;
         }
 
-        public static string GetCommand(string receive)
-        {
-            return receive.Split(separator)[0];
-        }
-
-        public static void Send(NetworkStream stream, string message, CommandManager.Commands cmd = CommandManager.Commands.NULL)
-        {
-            byte[] bytes = Encoding.UTF8.GetBytes(string.Format("{0}{1}{2}", cmd.ToString(), separator, message));
-            stream.Write(bytes, 0, bytes.Length);
-        }
 
         public static void Send(NetworkStream stream, byte[] bytes, CommandManager.Commands cmd = CommandManager.Commands.NULL)
         {
-            byte[] bytesCommand = Encoding.UTF8.GetBytes(string.Format("{0}{1}", cmd.ToString(), separator));
-
-            byte[] bArray = addByteToArray(bytesCommand, bytes);
+            byte[] bArray = addByteToArray((byte)cmd, bytes);
             stream.Write(bArray, 0, bArray.Length);
         }
 
-        public static byte[] addByteToArray(byte[] first, byte[] second)
+        public static byte[] addByteToArray(byte _byte, byte[] array)
         {
-            byte[] newArray = new byte[first.Length + second.Length];
+            byte[] newArray = new byte[array.Length + 1];
+            newArray[0] = _byte;
 
-            for (int i = 0; i < first.Length; i++)
-                newArray[i] = first[i];
-
-            for (int i = 0; i < second.Length; i++)
-                newArray[i + first.Length] = second[i];
+            for (int i = 0; i < array.Length; i++)
+                newArray[i + 1] = array[i];
 
             return newArray;
         }

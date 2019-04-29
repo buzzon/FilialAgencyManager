@@ -34,9 +34,11 @@ namespace Client_WindowsForms
             try
             {
                 comboBoxSubsidiary.Items.Clear();
-                NetManager.Send(stream, string.Empty, CommandManager.Commands.SubsidiaryLoad);
-                string input = NetManager.Receive(client, stream);
-                comboBoxSubsidiary.Items.AddRange(NetManager.GetMessage(input).Split(NetManager.separator));
+                NetManager.Send(stream, new byte[1], CommandManager.Commands.SubsidiaryLoad);
+                byte[] input = NetManager.ReceiveBytes(client, stream);
+
+                string message = NetManager.ToString(NetManager.GetData(input));
+                comboBoxSubsidiary.Items.AddRange(message.Split(NetManager.separator));
             }
             catch (Exception ex)
             {
@@ -51,8 +53,8 @@ namespace Client_WindowsForms
             {
                 NetManager.Send(stream, quaterData.Serialize(), CommandManager.Commands.QuaterDataSave);
 
-                string input = NetManager.Receive(client, stream);
-                MessageBox.Show(NetManager.GetMessage(input));
+                byte[] input = NetManager.ReceiveBytes(client, stream);
+                MessageBox.Show(NetManager.ToString(NetManager.GetData(input)));
             }
             catch (Exception ex)
             {

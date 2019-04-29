@@ -20,48 +20,39 @@ namespace Libs
 
         public static void CommandHandler(NetworkStream stream, byte[] input, string clientIp)
         {
-            string strInput = Encoding.UTF8.GetString(input);
-            string message = NetManager.GetMessage(strInput);
-            string command = NetManager.GetCommand(strInput);
+            byte[] inputData = NetManager.GetData(input);
 
-            switch (command)
+            switch ((Commands)input[0])
             {
-                case nameof(Commands.SubsidiaryAdd):
-                    SubsidiaryAdd(stream, message, clientIp);
+                case Commands.SubsidiaryAdd:
+                    SubsidiaryAdd(stream, inputData, clientIp);
                     break;
-                case nameof(Commands.SubsidiaryLoad):
+                case Commands.SubsidiaryLoad:
                     SubsidiaryLoad(stream, clientIp);
                     break;
-                case nameof(Commands.QuaterDataSave):
-                    QuaterDataSave(stream, input, clientIp);
+                case Commands.QuaterDataSave:
+                    QuaterDataSave(stream, inputData, clientIp);
                     break;
                 default:
-                    Console.WriteLine("{0}: {1}({2});", clientIp, command, message);
+                    Console.WriteLine("{0}: {1}({2});", clientIp, ((Commands)input[0]).ToString(), inputData);
                     break;
             }
         }
 
-        private static void QuaterDataSave(NetworkStream stream, byte[] bytes , string clientIp)
+        private static void QuaterDataSave(NetworkStream stream, byte[] inputData , string clientIp)
         {
-            string command = NetManager.GetCommand(Encoding.UTF8.GetString(bytes));
-            int commandByteCount = Encoding.UTF8.GetByteCount(command) + 1 ;
+            QuaterDataSerialize quaterData = new QuaterDataSerialize();
+            quaterData = quaterData.Deserialize(inputData);
 
-            byte[] dataBytes = new byte[bytes.Length - commandByteCount];
-
-            for (int i = 0; i < dataBytes.Length; i++)
-                dataBytes[i] = bytes[i + commandByteCount];
-
-            QuaterDataSerialize data = new QuaterDataSerialize();
-            data = data.Deserialize(dataBytes);
-
-            if (!Directory.Exists(Folder + "/" + data.subsidiary))
-                Directory.CreateDirectory(Folder + "/" + data.subsidiary);
+            if (!Directory.Exists(Folder + "/" + quaterData.subsidiary))
+                Directory.CreateDirectory(Folder + "/" + quaterData.subsidiary);
 
             try
             {
-                File.WriteAllBytes(Folder + "/" + data.subsidiary + "/" + data.quater + ".dat", dataBytes);
-                NetManager.Send(stream, String.Format("Сервер: Получены данные \"{0}\" за {1} квартал.", data.subsidiary, data.quater));
-                Console.WriteLine("{0}: Получены данные \"{1}\" за {2} квартал.", clientIp, data.subsidiary, data.quater);
+                File.WriteAllBytes(Folder + "/" + quaterData.subsidiary + "/" + quaterData.quater + ".dat", inputData);
+                string message = String.Format("Получены данные \"{0}\" за {1} квартал.", quaterData.subsidiary, quaterData.quater);
+                NetManager.Send(stream, NetManager.ToBytes(message));
+                Console.WriteLine("{0}: {1}", clientIp, message);
             }
             catch (Exception ex)
             {
@@ -76,17 +67,20 @@ namespace Libs
                 foreach (var item in File.ReadAllLines(SubsidiaryManager.FilePath))
                     Subsidiarys += item + NetManager.separator;
 
-            NetManager.Send(stream, Subsidiarys);
+            NetManager.Send(stream, NetManager.ToBytes(Subsidiarys));
             Console.WriteLine("{0}: Загружен список филиалов.", clientIp);
         }
 
-        private static void SubsidiaryAdd(NetworkStream stream, string message, string clientIp)
+        private static void SubsidiaryAdd(NetworkStream stream, byte[] inputData, string clientIp)
         {
-            if (message != String.Empty)
+            string subsidiary = Encoding.UTF8.GetString(inputData);
+
+            if (subsidiary != String.Empty)
             {
-                SubsidiaryManager.Add(message);
-                NetManager.Send(stream, String.Format("Сервер: Добавлен новый филиал: {0}.", message));
-                Console.WriteLine("{0}: Добавлен новый филиал: {1}.", clientIp, message);
+                SubsidiaryManager.Add(subsidiary);
+                string message = String.Format("Добавлен новый филиал: {0}.", subsidiary);
+                NetManager.Send(stream, NetManager.ToBytes(message));
+                Console.WriteLine("{0}: {1}.", clientIp, message);
             }
         }
     }
