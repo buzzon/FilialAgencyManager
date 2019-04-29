@@ -88,11 +88,15 @@
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panelControls = new System.Windows.Forms.Panel();
+            this.buttonDownloadAnnualReport = new System.Windows.Forms.Button();
             this.buttonSaveExcel = new System.Windows.Forms.Button();
             this.buttonSend = new System.Windows.Forms.Button();
             this.panelSettings = new System.Windows.Forms.Panel();
+            this.LabelSubsidiary = new System.Windows.Forms.Label();
+            this.comboBoxSubsidiary = new System.Windows.Forms.ComboBox();
             this.labelQuarter = new System.Windows.Forms.Label();
             this.comboBoxQuarter = new System.Windows.Forms.ComboBox();
+            this.labelEmpty = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.first_dataGridView)).BeginInit();
             this.tableLayoutPanelMain.SuspendLayout();
             this.panelData.SuspendLayout();
@@ -195,6 +199,7 @@
             // 
             this.panelData.AutoScroll = true;
             this.panelData.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelData.Controls.Add(this.labelEmpty);
             this.panelData.Controls.Add(this.tenth_dataGridView);
             this.panelData.Controls.Add(this.label9);
             this.panelData.Controls.Add(this.ninth_dataGridView);
@@ -757,6 +762,7 @@
             // 
             // panelControls
             // 
+            this.panelControls.Controls.Add(this.buttonDownloadAnnualReport);
             this.panelControls.Controls.Add(this.buttonSaveExcel);
             this.panelControls.Controls.Add(this.buttonSend);
             this.panelControls.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -766,8 +772,21 @@
             this.panelControls.Size = new System.Drawing.Size(1067, 50);
             this.panelControls.TabIndex = 1;
             // 
+            // buttonDownloadAnnualReport
+            // 
+            this.buttonDownloadAnnualReport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonDownloadAnnualReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonDownloadAnnualReport.Location = new System.Drawing.Point(846, 10);
+            this.buttonDownloadAnnualReport.Name = "buttonDownloadAnnualReport";
+            this.buttonDownloadAnnualReport.Size = new System.Drawing.Size(200, 30);
+            this.buttonDownloadAnnualReport.TabIndex = 24;
+            this.buttonDownloadAnnualReport.Text = "Запросить годовой отчет";
+            this.buttonDownloadAnnualReport.UseVisualStyleBackColor = true;
+            this.buttonDownloadAnnualReport.Click += new System.EventHandler(this.buttonDownloadAnnualReport_Click);
+            // 
             // buttonSaveExcel
             // 
+            this.buttonSaveExcel.Enabled = false;
             this.buttonSaveExcel.Location = new System.Drawing.Point(217, 10);
             this.buttonSaveExcel.Margin = new System.Windows.Forms.Padding(2);
             this.buttonSaveExcel.Name = "buttonSaveExcel";
@@ -789,6 +808,8 @@
             // 
             // panelSettings
             // 
+            this.panelSettings.Controls.Add(this.LabelSubsidiary);
+            this.panelSettings.Controls.Add(this.comboBoxSubsidiary);
             this.panelSettings.Controls.Add(this.labelQuarter);
             this.panelSettings.Controls.Add(this.comboBoxQuarter);
             this.panelSettings.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -797,6 +818,27 @@
             this.panelSettings.Name = "panelSettings";
             this.panelSettings.Size = new System.Drawing.Size(1067, 35);
             this.panelSettings.TabIndex = 2;
+            // 
+            // LabelSubsidiary
+            // 
+            this.LabelSubsidiary.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.LabelSubsidiary.AutoSize = true;
+            this.LabelSubsidiary.Location = new System.Drawing.Point(223, 9);
+            this.LabelSubsidiary.Name = "LabelSubsidiary";
+            this.LabelSubsidiary.Size = new System.Drawing.Size(173, 17);
+            this.LabelSubsidiary.TabIndex = 28;
+            this.LabelSubsidiary.Text = "Наименование филиала:";
+            // 
+            // comboBoxSubsidiary
+            // 
+            this.comboBoxSubsidiary.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxSubsidiary.FormattingEnabled = true;
+            this.comboBoxSubsidiary.Location = new System.Drawing.Point(402, 6);
+            this.comboBoxSubsidiary.Name = "comboBoxSubsidiary";
+            this.comboBoxSubsidiary.Size = new System.Drawing.Size(644, 24);
+            this.comboBoxSubsidiary.TabIndex = 29;
             // 
             // labelQuarter
             // 
@@ -817,8 +859,17 @@
             "4 - четвёртый"});
             this.comboBoxQuarter.Location = new System.Drawing.Point(85, 6);
             this.comboBoxQuarter.Name = "comboBoxQuarter";
-            this.comboBoxQuarter.Size = new System.Drawing.Size(106, 24);
+            this.comboBoxQuarter.Size = new System.Drawing.Size(127, 24);
             this.comboBoxQuarter.TabIndex = 27;
+            // 
+            // labelEmpty
+            // 
+            this.labelEmpty.AutoSize = true;
+            this.labelEmpty.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelEmpty.Location = new System.Drawing.Point(11, 1074);
+            this.labelEmpty.Name = "labelEmpty";
+            this.labelEmpty.Size = new System.Drawing.Size(0, 17);
+            this.labelEmpty.TabIndex = 37;
             // 
             // FormGetQuaterData
             // 
@@ -829,6 +880,7 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormGetQuaterData";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormGetQuaterData";
             ((System.ComponentModel.ISupportInitialize)(this.first_dataGridView)).EndInit();
             this.tableLayoutPanelMain.ResumeLayout(false);
@@ -915,5 +967,9 @@
         private System.Windows.Forms.Panel panelSettings;
         private System.Windows.Forms.Label labelQuarter;
         private System.Windows.Forms.ComboBox comboBoxQuarter;
+        private System.Windows.Forms.Label LabelSubsidiary;
+        private System.Windows.Forms.ComboBox comboBoxSubsidiary;
+        private System.Windows.Forms.Button buttonDownloadAnnualReport;
+        private System.Windows.Forms.Label labelEmpty;
     }
 }

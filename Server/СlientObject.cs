@@ -18,7 +18,7 @@ namespace Server
         {
             try
             {
-                Console.WriteLine("{0}: подключился.", clientIp);
+                Console.WriteLine("{0}: Подключился.", clientIp);
                 while (true)
                 {
                     try
@@ -29,7 +29,7 @@ namespace Server
                     }
                     catch (Exception)
                     {
-                        Console.WriteLine("{0}: отключился.", clientIp);
+                        Console.WriteLine("{0}: Отключился.", clientIp);
                         break;
                     }
                 }

@@ -25,7 +25,6 @@ namespace Server
                     TcpClient client = listener.AcceptTcpClient();
                     СlientObject clientObject = new СlientObject(client);
 
-                    // создаем новый поток для обслуживания нового клиента
                     Thread clientThread = new Thread(new ThreadStart(clientObject.Process));
                     clientThread.Start();
                 }

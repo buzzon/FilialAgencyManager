@@ -28,105 +28,78 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.LabelSubsidiary = new System.Windows.Forms.Label();
-            this.comboBoxSubsidiary = new System.Windows.Forms.ComboBox();
-            this.buttonDownloadAnnualReport = new System.Windows.Forms.Button();
-            this.buttonSendQuarterlyReport = new System.Windows.Forms.Button();
-            this.buttonSubsidiaryAdd = new System.Windows.Forms.Button();
-            this.groupBoxAdmin = new System.Windows.Forms.GroupBox();
-            this.textBoxSubsidiaryAdd = new System.Windows.Forms.TextBox();
+            this.buttonAuthorization = new System.Windows.Forms.Button();
             this.groupBoxUser = new System.Windows.Forms.GroupBox();
-            this.groupBoxAdmin.SuspendLayout();
+            this.textBoxPassword = new System.Windows.Forms.TextBox();
+            this.textBoxLogin = new System.Windows.Forms.TextBox();
+            this.labelPassword = new System.Windows.Forms.Label();
+            this.labelLogin = new System.Windows.Forms.Label();
             this.groupBoxUser.SuspendLayout();
             this.SuspendLayout();
             // 
-            // LabelSubsidiary
+            // buttonAuthorization
             // 
-            this.LabelSubsidiary.AutoSize = true;
-            this.LabelSubsidiary.Location = new System.Drawing.Point(6, 25);
-            this.LabelSubsidiary.Name = "LabelSubsidiary";
-            this.LabelSubsidiary.Size = new System.Drawing.Size(182, 18);
-            this.LabelSubsidiary.TabIndex = 0;
-            this.LabelSubsidiary.Text = "Наименование филиала:";
-            // 
-            // comboBoxSubsidiary
-            // 
-            this.comboBoxSubsidiary.FormattingEnabled = true;
-            this.comboBoxSubsidiary.Location = new System.Drawing.Point(188, 22);
-            this.comboBoxSubsidiary.Name = "comboBoxSubsidiary";
-            this.comboBoxSubsidiary.Size = new System.Drawing.Size(590, 26);
-            this.comboBoxSubsidiary.TabIndex = 1;
-            // 
-            // buttonDownloadAnnualReport
-            // 
-            this.buttonDownloadAnnualReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonDownloadAnnualReport.Location = new System.Drawing.Point(398, 59);
-            this.buttonDownloadAnnualReport.Name = "buttonDownloadAnnualReport";
-            this.buttonDownloadAnnualReport.Size = new System.Drawing.Size(380, 26);
-            this.buttonDownloadAnnualReport.TabIndex = 8;
-            this.buttonDownloadAnnualReport.Text = "Запросить годовой отчет";
-            this.buttonDownloadAnnualReport.UseVisualStyleBackColor = true;
-            // 
-            // buttonSendQuarterlyReport
-            // 
-            this.buttonSendQuarterlyReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonSendQuarterlyReport.Location = new System.Drawing.Point(9, 59);
-            this.buttonSendQuarterlyReport.Name = "buttonSendQuarterlyReport";
-            this.buttonSendQuarterlyReport.Size = new System.Drawing.Size(380, 26);
-            this.buttonSendQuarterlyReport.TabIndex = 9;
-            this.buttonSendQuarterlyReport.Text = "Отправить квартальный отчет";
-            this.buttonSendQuarterlyReport.UseVisualStyleBackColor = true;
-            this.buttonSendQuarterlyReport.Click += new System.EventHandler(this.buttonSendQuarterlyReport_Click);
-            // 
-            // buttonSubsidiaryAdd
-            // 
-            this.buttonSubsidiaryAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonSubsidiaryAdd.Location = new System.Drawing.Point(6, 23);
-            this.buttonSubsidiaryAdd.Name = "buttonSubsidiaryAdd";
-            this.buttonSubsidiaryAdd.Size = new System.Drawing.Size(176, 26);
-            this.buttonSubsidiaryAdd.TabIndex = 10;
-            this.buttonSubsidiaryAdd.Text = "Добавить филиал";
-            this.buttonSubsidiaryAdd.UseVisualStyleBackColor = true;
-            this.buttonSubsidiaryAdd.Click += new System.EventHandler(this.buttonSubsidiaryAdd_Click);
-            // 
-            // groupBoxAdmin
-            // 
-            this.groupBoxAdmin.Controls.Add(this.textBoxSubsidiaryAdd);
-            this.groupBoxAdmin.Controls.Add(this.buttonSubsidiaryAdd);
-            this.groupBoxAdmin.Location = new System.Drawing.Point(12, 120);
-            this.groupBoxAdmin.Name = "groupBoxAdmin";
-            this.groupBoxAdmin.Size = new System.Drawing.Size(784, 262);
-            this.groupBoxAdmin.TabIndex = 11;
-            this.groupBoxAdmin.TabStop = false;
-            this.groupBoxAdmin.Text = "Для администрации";
-            // 
-            // textBoxSubsidiaryAdd
-            // 
-            this.textBoxSubsidiaryAdd.Location = new System.Drawing.Point(199, 23);
-            this.textBoxSubsidiaryAdd.Name = "textBoxSubsidiaryAdd";
-            this.textBoxSubsidiaryAdd.Size = new System.Drawing.Size(579, 24);
-            this.textBoxSubsidiaryAdd.TabIndex = 11;
+            this.buttonAuthorization.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonAuthorization.Location = new System.Drawing.Point(9, 94);
+            this.buttonAuthorization.Name = "buttonAuthorization";
+            this.buttonAuthorization.Size = new System.Drawing.Size(385, 26);
+            this.buttonAuthorization.TabIndex = 9;
+            this.buttonAuthorization.Text = "Авторизация";
+            this.buttonAuthorization.UseVisualStyleBackColor = true;
+            this.buttonAuthorization.Click += new System.EventHandler(this.buttonAuthorization_Click);
             // 
             // groupBoxUser
             // 
-            this.groupBoxUser.Controls.Add(this.LabelSubsidiary);
-            this.groupBoxUser.Controls.Add(this.comboBoxSubsidiary);
-            this.groupBoxUser.Controls.Add(this.buttonDownloadAnnualReport);
-            this.groupBoxUser.Controls.Add(this.buttonSendQuarterlyReport);
+            this.groupBoxUser.Controls.Add(this.textBoxPassword);
+            this.groupBoxUser.Controls.Add(this.textBoxLogin);
+            this.groupBoxUser.Controls.Add(this.labelPassword);
+            this.groupBoxUser.Controls.Add(this.labelLogin);
+            this.groupBoxUser.Controls.Add(this.buttonAuthorization);
             this.groupBoxUser.Location = new System.Drawing.Point(12, 12);
             this.groupBoxUser.Name = "groupBoxUser";
-            this.groupBoxUser.Size = new System.Drawing.Size(784, 102);
+            this.groupBoxUser.Size = new System.Drawing.Size(400, 130);
             this.groupBoxUser.TabIndex = 12;
             this.groupBoxUser.TabStop = false;
             this.groupBoxUser.Text = "Для пользователей";
+            // 
+            // textBoxPassword
+            // 
+            this.textBoxPassword.Location = new System.Drawing.Point(78, 57);
+            this.textBoxPassword.Name = "textBoxPassword";
+            this.textBoxPassword.Size = new System.Drawing.Size(316, 24);
+            this.textBoxPassword.TabIndex = 13;
+            // 
+            // textBoxLogin
+            // 
+            this.textBoxLogin.Location = new System.Drawing.Point(78, 27);
+            this.textBoxLogin.Name = "textBoxLogin";
+            this.textBoxLogin.Size = new System.Drawing.Size(316, 24);
+            this.textBoxLogin.TabIndex = 12;
+            // 
+            // labelPassword
+            // 
+            this.labelPassword.AutoSize = true;
+            this.labelPassword.Location = new System.Drawing.Point(7, 60);
+            this.labelPassword.Name = "labelPassword";
+            this.labelPassword.Size = new System.Drawing.Size(65, 18);
+            this.labelPassword.TabIndex = 11;
+            this.labelPassword.Text = "Пароль:";
+            // 
+            // labelLogin
+            // 
+            this.labelLogin.AutoSize = true;
+            this.labelLogin.Location = new System.Drawing.Point(7, 30);
+            this.labelLogin.Name = "labelLogin";
+            this.labelLogin.Size = new System.Drawing.Size(54, 18);
+            this.labelLogin.TabIndex = 10;
+            this.labelLogin.Text = "Логин:";
             // 
             // FormLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(808, 394);
+            this.ClientSize = new System.Drawing.Size(429, 154);
             this.Controls.Add(this.groupBoxUser);
-            this.Controls.Add(this.groupBoxAdmin);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -135,8 +108,6 @@
             this.Name = "FormLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Лучший филиал";
-            this.groupBoxAdmin.ResumeLayout(false);
-            this.groupBoxAdmin.PerformLayout();
             this.groupBoxUser.ResumeLayout(false);
             this.groupBoxUser.PerformLayout();
             this.ResumeLayout(false);
@@ -144,15 +115,12 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label LabelSubsidiary;
-        private System.Windows.Forms.ComboBox comboBoxSubsidiary;
-        private System.Windows.Forms.Button buttonDownloadAnnualReport;
-        private System.Windows.Forms.Button buttonSendQuarterlyReport;
-        private System.Windows.Forms.Button buttonSubsidiaryAdd;
-        private System.Windows.Forms.GroupBox groupBoxAdmin;
-        private System.Windows.Forms.TextBox textBoxSubsidiaryAdd;
+        private System.Windows.Forms.Button buttonAuthorization;
         private System.Windows.Forms.GroupBox groupBoxUser;
+        private System.Windows.Forms.TextBox textBoxPassword;
+        private System.Windows.Forms.TextBox textBoxLogin;
+        private System.Windows.Forms.Label labelPassword;
+        private System.Windows.Forms.Label labelLogin;
     }
 }
 

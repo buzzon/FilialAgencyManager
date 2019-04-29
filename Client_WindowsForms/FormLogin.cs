@@ -21,7 +21,6 @@ namespace Client_WindowsForms
                 client = new TcpClient();
                 client.Connect(IPAddress.Parse(address), port);
                 stream = client.GetStream();
-                LoadSubsidiaryInCombobox();
             }
             catch (Exception ex)
             {
@@ -29,46 +28,21 @@ namespace Client_WindowsForms
             }
         }
 
-        private void LoadSubsidiaryInCombobox()
+        private void buttonAuthorization_Click(object sender, EventArgs e)
         {
-            comboBoxSubsidiary.Items.Clear();
-            NetManager.Send(stream, string.Empty, CommandManager.Commands.SubsidiaryLoad);
-            string input = NetManager.Receive(client, stream);
-            comboBoxSubsidiary.Items.AddRange(NetManager.GetMessage(input).Split(NetManager.separator));
-        }
-
-        private void buttonSubsidiaryAdd_Click(object sender, EventArgs e)
-        {
-            if (stream != null)
+            try
             {
-                try
-                {
-
-                    NetManager.Send(stream, textBoxSubsidiaryAdd.Text, CommandManager.Commands.SubsidiaryAdd);
-                    string input = NetManager.Receive(client, stream);
-                    LoadSubsidiaryInCombobox();
-                    MessageBox.Show(NetManager.GetMessage(input));
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+                FormGetQuaterData getQuaterData = new FormGetQuaterData(client);
+                Hide();
+                getQuaterData.ShowDialog(this);
             }
-        }
-
-        private void buttonSendQuarterlyReport_Click(object sender, EventArgs e)
-        {
-            if (stream != null)
+            catch (Exception ex)
             {
-                try
-                {
-                    FormGetQuaterData getQuaterData = new FormGetQuaterData(client, comboBoxSubsidiary.SelectedItem.ToString());
-                    getQuaterData.ShowDialog(this);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                Close();
             }
         }
     }

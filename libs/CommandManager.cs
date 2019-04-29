@@ -7,7 +7,7 @@ namespace Libs
 {
     public class CommandManager
     {
-        public enum Commands
+        public enum Commands : byte
         {
             NULL,
             SubsidiaryAdd,
@@ -15,7 +15,7 @@ namespace Libs
             QuaterDataSave
         }
 
-        private const string Folder = "Subsidiary";
+        private const string Folder = "Филиалы";
 
 
         public static void CommandHandler(NetworkStream stream, byte[] input, string clientIp)
@@ -30,7 +30,7 @@ namespace Libs
                     SubsidiaryAdd(stream, message, clientIp);
                     break;
                 case nameof(Commands.SubsidiaryLoad):
-                    SubsidiaryLoad(stream);
+                    SubsidiaryLoad(stream, clientIp);
                     break;
                 case nameof(Commands.QuaterDataSave):
                     QuaterDataSave(stream, input, clientIp);
@@ -60,8 +60,7 @@ namespace Libs
             try
             {
                 File.WriteAllBytes(Folder + "/" + data.subsidiary + "/" + data.quater + ".dat", dataBytes);
-
-                NetManager.Send(stream, String.Format("{0}: Получены данные \"{1}\" за {2} квартал.", clientIp, data.subsidiary, data.quater));
+                NetManager.Send(stream, String.Format("Сервер: Получены данные \"{0}\" за {1} квартал.", data.subsidiary, data.quater));
                 Console.WriteLine("{0}: Получены данные \"{1}\" за {2} квартал.", clientIp, data.subsidiary, data.quater);
             }
             catch (Exception ex)
@@ -70,22 +69,23 @@ namespace Libs
             }
         }
 
-        private static void SubsidiaryLoad(NetworkStream stream)
+        private static void SubsidiaryLoad(NetworkStream stream, string clientIp)
         {
-            string Subsidiarys = "";
+            string Subsidiarys = String.Empty;
             if (File.Exists(SubsidiaryManager.FilePath))
                 foreach (var item in File.ReadAllLines(SubsidiaryManager.FilePath))
                     Subsidiarys += item + NetManager.separator;
 
             NetManager.Send(stream, Subsidiarys);
+            Console.WriteLine("{0}: Загружен список филиалов.", clientIp);
         }
 
         private static void SubsidiaryAdd(NetworkStream stream, string message, string clientIp)
         {
-            if (message != "")
+            if (message != String.Empty)
             {
                 SubsidiaryManager.Add(message);
-                NetManager.Send(stream, String.Format("Добавлен новый филиал: {0}.", message));
+                NetManager.Send(stream, String.Format("Сервер: Добавлен новый филиал: {0}.", message));
                 Console.WriteLine("{0}: Добавлен новый филиал: {1}.", clientIp, message);
             }
         }
