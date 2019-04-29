@@ -77,8 +77,8 @@ namespace Libs
             for (int i = 0; i < first.Length; i++)
                 newArray[i] = first[i];
 
-            for (int i = first.Length; i < second.Length; i++)
-                newArray[i] = second[i];
+            for (int i = 0; i < second.Length; i++)
+                newArray[i + first.Length] = second[i];
 
             return newArray;
         }

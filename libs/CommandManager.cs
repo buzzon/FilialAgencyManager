@@ -15,6 +15,8 @@ namespace Libs
             QuaterDataSave
         }
 
+        private const string Folder = "Subsidiary";
+
 
         public static void CommandHandler(NetworkStream stream, byte[] input, string clientIp)
         {
@@ -49,12 +51,23 @@ namespace Libs
             for (int i = 0; i < dataBytes.Length; i++)
                 dataBytes[i] = bytes[i + commandByteCount];
 
+            QuaterDataSerialize data = new QuaterDataSerialize();
+            data = data.Deserialize(dataBytes);
 
-            QuaterDataSerialize quaterDataSerialize = new QuaterDataSerialize();
-            quaterDataSerialize = quaterDataSerialize.Deserialize(dataBytes);
+            if (!Directory.Exists(Folder + "/" + data.subsidiary))
+                Directory.CreateDirectory(Folder + "/" + data.subsidiary);
 
-            NetManager.Send(stream, String.Format("{0}: Получены данные \"{1}\" за {2} квартал.", clientIp, quaterDataSerialize.subsidiary, quaterDataSerialize.quater));
-            Console.WriteLine("{0}: Получены данные \"{1}\" за {2} квартал.", clientIp, quaterDataSerialize.subsidiary, quaterDataSerialize.quater);
+            try
+            {
+                File.WriteAllBytes(Folder + "/" + data.subsidiary + "/" + data.quater + ".dat", dataBytes);
+
+                NetManager.Send(stream, String.Format("{0}: Получены данные \"{1}\" за {2} квартал.", clientIp, data.subsidiary, data.quater));
+                Console.WriteLine("{0}: Получены данные \"{1}\" за {2} квартал.", clientIp, data.subsidiary, data.quater);
+            }
+            catch (Exception ex)
+            {
+                ExceptManager.Write(ex);
+            }
         }
 
         private static void SubsidiaryLoad(NetworkStream stream)

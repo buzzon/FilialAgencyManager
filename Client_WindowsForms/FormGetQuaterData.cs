@@ -61,6 +61,9 @@ namespace Client_WindowsForms
             try
             {
                 NetManager.Send(stream, quaterData.Serialize(), CommandManager.Commands.QuaterDataSave);
+
+                string input = NetManager.Receive(client, stream);
+                MessageBox.Show(NetManager.GetMessage(input));
             }
             catch (Exception ex)
             {
