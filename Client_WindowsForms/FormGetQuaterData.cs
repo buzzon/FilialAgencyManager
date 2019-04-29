@@ -35,10 +35,13 @@ namespace Client_WindowsForms
             {
                 comboBoxSubsidiary.Items.Clear();
                 NetManager.Send(stream, new byte[1], CommandManager.Commands.SubsidiaryLoad);
-                byte[] input = NetManager.ReceiveBytes(client, stream);
+                byte[] input = NetManager.Receive(client, stream);
 
                 string message = NetManager.ToString(NetManager.GetData(input));
-                comboBoxSubsidiary.Items.AddRange(message.Split(NetManager.separator));
+
+                string[] subsidiarys = message.Split('\n');
+                for (int i = 0; i < subsidiarys.Length - 1; i++)
+                    comboBoxSubsidiary.Items.Add(subsidiarys[i]);
             }
             catch (Exception ex)
             {
@@ -46,14 +49,14 @@ namespace Client_WindowsForms
             }
         }
 
-        private void buttonSend_Click(object sender, EventArgs e)
+        private void ButtonSend_Click(object sender, EventArgs e)
         {
             QuaterDataSerialize quaterData = new QuaterDataSerialize(comboBoxSubsidiary.SelectedItem.ToString(), comboBoxQuarter.SelectedItem.ToString() , Tables, Titles);
             try
             {
                 NetManager.Send(stream, quaterData.Serialize(), CommandManager.Commands.QuaterDataSave);
 
-                byte[] input = NetManager.ReceiveBytes(client, stream);
+                byte[] input = NetManager.Receive(client, stream);
                 MessageBox.Show(NetManager.ToString(NetManager.GetData(input)));
             }
             catch (Exception ex)
@@ -85,9 +88,12 @@ namespace Client_WindowsForms
             label8,
             label9 };
 
-        private void buttonDownloadAnnualReport_Click(object sender, EventArgs e)
+        private void ButtonDownloadAnnualReport_Click(object sender, EventArgs e)
         {
+            NetManager.Send(stream, NetManager.ToBytes(comboBoxSubsidiary.SelectedItem.ToString()), CommandManager.Commands.AnnualReport);
 
+            byte[] input = NetManager.Receive(client, stream);
+            MessageBox.Show(NetManager.ToString(NetManager.GetData(input)));
         }
     }
 }

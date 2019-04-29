@@ -6,7 +6,6 @@ namespace Libs
 {
     public class NetManager
     {
-        public const char separator = '|';
 
         public static void Disconnect(TcpClient client)
         {
@@ -27,17 +26,13 @@ namespace Libs
             return ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
         }
 
-        public static string ToString(byte[] bytes)
+        public static void Send(NetworkStream stream, byte[] bytes, CommandManager.Commands cmd = CommandManager.Commands.NULL)
         {
-            return Encoding.UTF8.GetString(bytes);
+            byte[] bArray = addByteToArray((byte)cmd, bytes);
+            stream.Write(bArray, 0, bArray.Length);
         }
 
-        public static byte[] ToBytes(string messgae)
-        {
-            return Encoding.UTF8.GetBytes(messgae);
-        }
-
-        public static byte[] ReceiveBytes(TcpClient client, NetworkStream stream)
+        public static byte[] Receive(TcpClient client, NetworkStream stream)
         {
             byte[] bytes = new byte[client.ReceiveBufferSize];
             int bytesRead = stream.Read(bytes, 0, bytes.Length);
@@ -59,12 +54,17 @@ namespace Libs
             return newArray;
         }
 
-
-        public static void Send(NetworkStream stream, byte[] bytes, CommandManager.Commands cmd = CommandManager.Commands.NULL)
+        public static string ToString(byte[] bytes)
         {
-            byte[] bArray = addByteToArray((byte)cmd, bytes);
-            stream.Write(bArray, 0, bArray.Length);
+            return Encoding.UTF8.GetString(bytes);
         }
+
+        public static byte[] ToBytes(string messgae)
+        {
+            return Encoding.UTF8.GetBytes(messgae);
+        }
+
+
 
         public static byte[] addByteToArray(byte _byte, byte[] array)
         {

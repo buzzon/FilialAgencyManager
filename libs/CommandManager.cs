@@ -12,7 +12,8 @@ namespace Libs
             NULL,
             SubsidiaryAdd,
             SubsidiaryLoad,
-            QuaterDataSave
+            QuaterDataSave,
+            AnnualReport,
         }
 
         private const string Folder = "Филиалы";
@@ -33,22 +34,48 @@ namespace Libs
                 case Commands.QuaterDataSave:
                     QuaterDataSave(stream, inputData, clientIp);
                     break;
+                case Commands.AnnualReport:
+                    AnnualReport(stream, inputData, clientIp);
+                    break;
                 default:
                     Console.WriteLine("{0}: {1}({2});", clientIp, ((Commands)input[0]).ToString(), inputData);
                     break;
             }
         }
 
+        private static void AnnualReport(NetworkStream stream, byte[] inputData, string clientIp)
+        {
+            string subsidiary = NetManager.ToString(inputData);
+
+            if (!Directory.Exists(Folder + "/" + subsidiary))
+            {
+                string message = String.Format("Данных для \"{0}\" не обнаружено.", subsidiary);
+                NetManager.Send(stream, NetManager.ToBytes(message));
+                Console.WriteLine("{0}: {1}", clientIp, message);
+            }
+            else
+            {
+                string quaters = string.Empty;
+
+                foreach (var item in new DirectoryInfo(Folder + "/" + subsidiary).GetFiles())
+                    quaters += " " + Path.GetFileNameWithoutExtension(item.Name);
+                
+                string message = String.Format("Отчет построен по данным за{0}.", quaters);
+                NetManager.Send(stream, NetManager.ToBytes(message));
+                Console.WriteLine("{0}: {1}", clientIp, message);
+            }
+        }
+
         private static void QuaterDataSave(NetworkStream stream, byte[] inputData , string clientIp)
         {
-            QuaterDataSerialize quaterData = new QuaterDataSerialize();
-            quaterData = quaterData.Deserialize(inputData);
-
-            if (!Directory.Exists(Folder + "/" + quaterData.subsidiary))
-                Directory.CreateDirectory(Folder + "/" + quaterData.subsidiary);
-
             try
             {
+                QuaterDataSerialize quaterData = new QuaterDataSerialize();
+                quaterData = quaterData.Deserialize(inputData);
+
+                if (!Directory.Exists(Folder + "/" + quaterData.subsidiary))
+                    Directory.CreateDirectory(Folder + "/" + quaterData.subsidiary);
+
                 File.WriteAllBytes(Folder + "/" + quaterData.subsidiary + "/" + quaterData.quater + ".dat", inputData);
                 string message = String.Format("Получены данные \"{0}\" за {1} квартал.", quaterData.subsidiary, quaterData.quater);
                 NetManager.Send(stream, NetManager.ToBytes(message));
@@ -65,7 +92,7 @@ namespace Libs
             string Subsidiarys = String.Empty;
             if (File.Exists(SubsidiaryManager.FilePath))
                 foreach (var item in File.ReadAllLines(SubsidiaryManager.FilePath))
-                    Subsidiarys += item + NetManager.separator;
+                    Subsidiarys += item + "\n";
 
             NetManager.Send(stream, NetManager.ToBytes(Subsidiarys));
             Console.WriteLine("{0}: Загружен список филиалов.", clientIp);

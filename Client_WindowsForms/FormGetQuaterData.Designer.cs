@@ -782,7 +782,7 @@
             this.buttonDownloadAnnualReport.TabIndex = 24;
             this.buttonDownloadAnnualReport.Text = "Запросить годовой отчет";
             this.buttonDownloadAnnualReport.UseVisualStyleBackColor = true;
-            this.buttonDownloadAnnualReport.Click += new System.EventHandler(this.buttonDownloadAnnualReport_Click);
+            this.buttonDownloadAnnualReport.Click += new System.EventHandler(this.ButtonDownloadAnnualReport_Click);
             // 
             // buttonSaveExcel
             // 
@@ -804,7 +804,7 @@
             this.buttonSend.TabIndex = 19;
             this.buttonSend.Text = "Отправить";
             this.buttonSend.UseVisualStyleBackColor = true;
-            this.buttonSend.Click += new System.EventHandler(this.buttonSend_Click);
+            this.buttonSend.Click += new System.EventHandler(this.ButtonSend_Click);
             // 
             // panelSettings
             // 
