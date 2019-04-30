@@ -57,12 +57,23 @@ namespace Libs
             {
                 string quaters = string.Empty;
 
+                QuaterDataSerialize annualReport = new QuaterDataSerialize();
+
                 foreach (var item in new DirectoryInfo(Folder + "/" + subsidiary).GetFiles())
+                {
                     quaters += " " + Path.GetFileNameWithoutExtension(item.Name);
+
+                    QuaterDataSerialize quater = new QuaterDataSerialize();
+                    byte[] vs = File.ReadAllBytes(Folder + "/" + subsidiary + "/" + item.Name);
+
+                    annualReport.AddData(quater.Deserialize(vs));
+                }
                 
                 string message = String.Format("Отчет построен по данным за{0}.", quaters);
                 NetManager.Send(stream, NetManager.ToBytes(message));
                 Console.WriteLine("{0}: {1}", clientIp, message);
+
+                NetManager.Send(stream, annualReport.Serialize());
             }
         }
 

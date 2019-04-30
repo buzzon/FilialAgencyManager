@@ -40,7 +40,7 @@ namespace Libs
 
         private DataTable[] GetDataTable(DataGridView[] DataGridTables)
         {
-            DataTable[]  dataTables = new DataTable[DataGridTables.Length];
+            DataTable[] dataTables = new DataTable[DataGridTables.Length];
             for (int i = 0; i < dataTables.Length; i++)
                 dataTables[i] = new DataTable();
 
@@ -73,6 +73,53 @@ namespace Libs
             {
                 MessageBox.Show("Error: " + ex.Message);
                 throw;
+            }
+        }
+
+        internal void AddData(QuaterDataSerialize quater)
+        {
+            if (Tables == null)
+            {
+                Tables = quater.Tables;
+                Titles = quater.Titles;
+                subsidiary = quater.subsidiary;
+            }
+            else
+            {
+                for (int i = 0; i < Tables[0].Rows.Count; i++)
+                    for (int j = 1; j < 3; j++)
+                        Tables[0].Rows[i][j] = Convert.ToDouble(Tables[0].Rows[i][j]) + Convert.ToDouble(quater.Tables[0].Rows[i][j]);
+
+
+                for (int j = 0; j < 2; j++)
+                    Tables[1].Rows[0][j] = Convert.ToDouble(Tables[1].Rows[0][j]) + Convert.ToDouble(quater.Tables[1].Rows[0][j]);
+
+
+                for (int i = 0; i < Tables[2].Rows.Count; i++)
+                    for (int j = 1; j < 3; j++)
+                        Tables[2].Rows[i][j] = Convert.ToDouble(Tables[2].Rows[i][j]) + Convert.ToDouble(quater.Tables[2].Rows[i][j]);
+
+                for (int i = 0; i < Tables[3].Rows.Count; i++)
+                    for (int j = 1; j < 4; j++)
+                        Tables[3].Rows[i][j] = Convert.ToDouble(Tables[3].Rows[i][j]) + Convert.ToDouble(quater.Tables[3].Rows[i][j]);
+
+                for (int j = 2; j < 4; j++)
+                    Tables[4].Rows[0][j] = Convert.ToDouble(Tables[4].Rows[0][j]) + Convert.ToDouble(quater.Tables[4].Rows[0][j]);
+
+                Tables[5].Rows[0][0] = Convert.ToDouble(Tables[5].Rows[0][0]) + Convert.ToDouble(quater.Tables[5].Rows[0][0]);
+
+                Tables[6].Rows[0][0] = Convert.ToDouble(Tables[6].Rows[0][0]) + Convert.ToDouble(quater.Tables[6].Rows[0][0]);
+
+                for (int i = 0; i < Tables[7].Rows.Count; i++)
+                    for (int j = 1; j < 3; j++)
+                        Tables[7].Rows[i][j] = Convert.ToDouble(Tables[7].Rows[i][j]) + Convert.ToDouble(quater.Tables[7].Rows[i][j]);
+
+                for (int j = 0; j < 2; j++)
+                    Tables[8].Rows[0][j] = Convert.ToDouble(Tables[8].Rows[0][j]) + Convert.ToDouble(quater.Tables[8].Rows[0][j]);
+
+                for (int j = 0; j < 2; j++)
+                    Tables[9].Rows[0][j] = Convert.ToDouble(Tables[9].Rows[0][j]) + Convert.ToDouble(quater.Tables[9].Rows[0][j]);
+
             }
         }
 

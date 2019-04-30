@@ -51,9 +51,9 @@ namespace Client_WindowsForms
 
         private void ButtonSend_Click(object sender, EventArgs e)
         {
-            QuaterDataSerialize quaterData = new QuaterDataSerialize(comboBoxSubsidiary.SelectedItem.ToString(), comboBoxQuarter.SelectedItem.ToString() , Tables, Titles);
             try
             {
+                QuaterDataSerialize quaterData = new QuaterDataSerialize(comboBoxSubsidiary.SelectedItem.ToString(), comboBoxQuarter.SelectedItem.ToString(), Tables, Titles);
                 NetManager.Send(stream, quaterData.Serialize(), CommandManager.Commands.QuaterDataSave);
 
                 byte[] input = NetManager.Receive(client, stream);
@@ -90,10 +90,27 @@ namespace Client_WindowsForms
 
         private void ButtonDownloadAnnualReport_Click(object sender, EventArgs e)
         {
-            NetManager.Send(stream, NetManager.ToBytes(comboBoxSubsidiary.SelectedItem.ToString()), CommandManager.Commands.AnnualReport);
+            try
+            {
+                NetManager.Send(stream, NetManager.ToBytes(comboBoxSubsidiary.SelectedItem.ToString()), CommandManager.Commands.AnnualReport);
 
-            byte[] input = NetManager.Receive(client, stream);
-            MessageBox.Show(NetManager.ToString(NetManager.GetData(input)));
+                byte[] input = NetManager.Receive(client, stream);
+                MessageBox.Show(NetManager.ToString(NetManager.GetData(input)));
+
+                byte[] annualReport = NetManager.GetData(NetManager.Receive(client, stream));
+                QuaterDataSerialize annualReportData = new QuaterDataSerialize();
+                annualReportData = annualReportData.Deserialize(annualReport);
+
+                for (int i = 0; i < Tables.Length; i++)
+                {
+                    Tables[i].Columns.Clear();
+                    Tables[i].DataSource = annualReportData.Tables[i];
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
