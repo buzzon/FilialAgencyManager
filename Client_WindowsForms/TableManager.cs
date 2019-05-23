@@ -73,7 +73,7 @@ namespace Client_WindowsForms
                     cells = new DataGridViewCell[] { tables[0][1, i], tables[0][2, i] };
                     if (!TryParseCells(cells, out double[] parameters) || parameters[1] <= 0)
                         continue;
-                    tables[0][3, i].Value = parameters[0] * 365 / parameters[1];
+                    tables[0][3, i].Value = parameters[0]  / parameters[1] * 366;
                 }
             };
 
@@ -145,7 +145,7 @@ namespace Client_WindowsForms
                 DataGridViewCell[] cells = { tables[6][0, 0], tables[6][1, 0] };
                 if (!TryParseCells(cells, out int[] parameters) || parameters[1] <= 0)
                     return;
-                tables[6][2, 0].Value = (double)parameters[0] / parameters[1];
+                tables[6][2, 0].Value = (double)parameters[0]  / parameters[1] * 1000000;
             };
 
             tablesFillers[7] = () =>
@@ -156,7 +156,7 @@ namespace Client_WindowsForms
                     cells = new DataGridViewCell[] { tables[7][1, i], tables[7][2, i] };
                     if (!TryParseCells(cells, out int[] parameters) || parameters[1] <= 0)
                         continue;
-                    tables[7][3, i].Value = (double)parameters[0] / parameters[1];
+                    tables[7][3, i].Value = (double)parameters[0] / parameters[1] * 100;
                 }
             };
 
