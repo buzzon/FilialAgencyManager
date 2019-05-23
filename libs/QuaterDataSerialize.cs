@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Runtime.Serialization;
@@ -12,46 +13,46 @@ namespace Libs
     {
         public DataTable[] Tables { get; set; }
         public string[] Titles { get; private set; }
-        public string subsidiary { get; private set; }
-        public string quater { get; private set; }
+        public string Subsidiary { get; private set; }
+        public string Quater { get; }
 
         public QuaterDataSerialize()
         {
 
         }
 
-        public QuaterDataSerialize(string subsidiary, string quater, DataGridView[] DataGridTables, Label[] LabelTitles)
+        public QuaterDataSerialize(string subsidiary, string quater, DataGridView[] dataGridTables, IReadOnlyList<Label> labelTitles)
         {
-            Tables = GetDataTable(DataGridTables);
-            Titles = GetString(LabelTitles);
-            this.quater = quater;
-            this.subsidiary = subsidiary;
+            Tables = GetDataTable(dataGridTables);
+            Titles = GetString(labelTitles);
+            Quater = quater;
+            Subsidiary = subsidiary;
         }
 
-        private static string[] GetString(Label[] LabelTitles)
+        private static string[] GetString(IReadOnlyList<Label> labelTitles)
         {
-            string[] titles = new string[LabelTitles.Length];
+            var titles = new string[labelTitles.Count];
 
-            for (int i = 0; i < LabelTitles.Length; i++)
-                titles[i] = LabelTitles[i].Text;
+            for (var i = 0; i < labelTitles.Count; i++)
+                titles[i] = labelTitles[i].Text;
 
             return titles;
         }
 
-        private DataTable[] GetDataTable(DataGridView[] DataGridTables)
+        private static DataTable[] GetDataTable(IReadOnlyList<DataGridView> dataGridTables)
         {
-            DataTable[] dataTables = new DataTable[DataGridTables.Length];
-            for (int i = 0; i < dataTables.Length; i++)
+            var dataTables = new DataTable[dataGridTables.Count];
+            for (var i = 0; i < dataTables.Length; i++)
                 dataTables[i] = new DataTable();
 
-            for (int i = 0; i < DataGridTables.Length; i++)
-                foreach (DataGridViewColumn col in DataGridTables[i].Columns)
+            for (var i = 0; i < dataGridTables.Count; i++)
+                foreach (DataGridViewColumn col in dataGridTables[i].Columns)
                     dataTables[i].Columns.Add(col.Name);
 
-            for (int i = 0; i < dataTables.Length; i++)
-                foreach (DataGridViewRow row in DataGridTables[i].Rows)
+            for (var i = 0; i < dataTables.Length; i++)
+                foreach (DataGridViewRow row in dataGridTables[i].Rows)
                 {
-                    DataRow dRow = dataTables[i].NewRow();
+                    var dRow = dataTables[i].NewRow();
                     foreach (DataGridViewCell cell in row.Cells)
                         dRow[cell.ColumnIndex] = cell.Value;
                     dataTables[i].Rows.Add(dRow);
@@ -62,12 +63,12 @@ namespace Libs
 
         public byte[] Serialize()
         {
-            MemoryStream data = new MemoryStream();
-            BinaryFormatter binaryFormatter = new BinaryFormatter();
+            var data = new MemoryStream();
+            var binaryFormatter = new BinaryFormatter();
             try
             {
                 binaryFormatter.Serialize(data, this);
-                return data.ToArray(); ;
+                return data.ToArray();
             }
             catch (SerializationException ex)
             {
@@ -82,42 +83,40 @@ namespace Libs
             {
                 Tables = quater.Tables;
                 Titles = quater.Titles;
-                subsidiary = quater.subsidiary;
+                Subsidiary = quater.Subsidiary;
             }
             else
             {
-                for (int i = 0; i < Tables[0].Rows.Count; i++)
-                    for (int j = 1; j < 3; j++)
+                for (var i = 0; i < Tables[0].Rows.Count; i++)
+                    for (var j = 1; j < 3; j++)
                         Tables[0].Rows[i][j] = Convert.ToDouble(Tables[0].Rows[i][j]) + Convert.ToDouble(quater.Tables[0].Rows[i][j]);
 
-
-                for (int j = 0; j < 2; j++)
+                for (var j = 0; j < 2; j++)
                     Tables[1].Rows[0][j] = Convert.ToDouble(Tables[1].Rows[0][j]) + Convert.ToDouble(quater.Tables[1].Rows[0][j]);
 
-
-                for (int i = 0; i < Tables[2].Rows.Count; i++)
-                    for (int j = 1; j < 3; j++)
+                for (var i = 0; i < Tables[2].Rows.Count; i++)
+                    for (var j = 1; j < 3; j++)
                         Tables[2].Rows[i][j] = Convert.ToDouble(Tables[2].Rows[i][j]) + Convert.ToDouble(quater.Tables[2].Rows[i][j]);
 
-                for (int i = 0; i < Tables[3].Rows.Count; i++)
-                    for (int j = 1; j < 4; j++)
+                for (var i = 0; i < Tables[3].Rows.Count; i++)
+                    for (var j = 1; j < 4; j++)
                         Tables[3].Rows[i][j] = Convert.ToDouble(Tables[3].Rows[i][j]) + Convert.ToDouble(quater.Tables[3].Rows[i][j]);
 
-                for (int j = 2; j < 4; j++)
+                for (var j = 2; j < 4; j++)
                     Tables[4].Rows[0][j] = Convert.ToDouble(Tables[4].Rows[0][j]) + Convert.ToDouble(quater.Tables[4].Rows[0][j]);
 
                 Tables[5].Rows[0][0] = Convert.ToDouble(Tables[5].Rows[0][0]) + Convert.ToDouble(quater.Tables[5].Rows[0][0]);
 
                 Tables[6].Rows[0][0] = Convert.ToDouble(Tables[6].Rows[0][0]) + Convert.ToDouble(quater.Tables[6].Rows[0][0]);
 
-                for (int i = 0; i < Tables[7].Rows.Count; i++)
-                    for (int j = 1; j < 3; j++)
+                for (var i = 0; i < Tables[7].Rows.Count; i++)
+                    for (var j = 1; j < 3; j++)
                         Tables[7].Rows[i][j] = Convert.ToDouble(Tables[7].Rows[i][j]) + Convert.ToDouble(quater.Tables[7].Rows[i][j]);
 
-                for (int j = 0; j < 2; j++)
+                for (var j = 0; j < 2; j++)
                     Tables[8].Rows[0][j] = Convert.ToDouble(Tables[8].Rows[0][j]) + Convert.ToDouble(quater.Tables[8].Rows[0][j]);
 
-                for (int j = 0; j < 2; j++)
+                for (var j = 0; j < 2; j++)
                     Tables[9].Rows[0][j] = Convert.ToDouble(Tables[9].Rows[0][j]) + Convert.ToDouble(quater.Tables[9].Rows[0][j]);
 
             }
@@ -125,7 +124,7 @@ namespace Libs
 
         public QuaterDataSerialize Deserialize(byte[] data)
         {
-            BinaryFormatter binaryFormatter = new BinaryFormatter();
+            var binaryFormatter = new BinaryFormatter();
             try
             {
                 return (QuaterDataSerialize)binaryFormatter.Deserialize(new MemoryStream(data));

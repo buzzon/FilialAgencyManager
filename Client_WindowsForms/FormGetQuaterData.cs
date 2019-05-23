@@ -6,19 +6,19 @@ namespace Client_WindowsForms
 {
     public partial class FormGetQuaterData : Form
     {
-        private TableManager tableManager;
+        private readonly TableManager _tableManager;
 
-        System.Net.Sockets.TcpClient client;
-        System.Net.Sockets.NetworkStream stream;
+        private readonly System.Net.Sockets.TcpClient _client;
+        private readonly System.Net.Sockets.NetworkStream _stream;
 
         public FormGetQuaterData(System.Net.Sockets.TcpClient client)
         {
             InitializeComponent();
 
-            this.client = client;
-            this.stream = client.GetStream();
+            _client = client;
+            _stream = client.GetStream();
 
-            tableManager = new TableManager(Tables);
+            _tableManager = new TableManager(Tables);
             TableManager.InitializeTables(Tables);
 
             LoadSubsidiaryInCombobox();
@@ -26,7 +26,7 @@ namespace Client_WindowsForms
 
         private void DataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            tableManager.FillTable((DataGridView)sender);
+            _tableManager.FillTable((DataGridView)sender);
         }
 
         private void LoadSubsidiaryInCombobox()
@@ -34,13 +34,11 @@ namespace Client_WindowsForms
             try
             {
                 comboBoxSubsidiary.Items.Clear();
-                NetManager.Send(stream, new byte[1], CommandManager.Commands.SubsidiaryLoad);
-                byte[] input = NetManager.Receive(client, stream);
-
-                string message = NetManager.ToString(NetManager.GetData(input));
-
-                string[] subsidiarys = message.Split('\n');
-                for (int i = 0; i < subsidiarys.Length - 1; i++)
+                NetManager.Send(_stream, new byte[1], CommandManager.Commands.SubsidiaryLoad);
+                var input = NetManager.Receive(_client, _stream);
+                var message = NetManager.ToString(NetManager.GetData(input));
+                var subsidiarys = message.Split('\n');
+                for (var i = 0; i < subsidiarys.Length - 1; i++)
                     comboBoxSubsidiary.Items.Add(subsidiarys[i]);
             }
             catch (Exception ex)
@@ -53,10 +51,10 @@ namespace Client_WindowsForms
         {
             try
             {
-                QuaterDataSerialize quaterData = new QuaterDataSerialize(comboBoxSubsidiary.SelectedItem.ToString(), comboBoxQuarter.SelectedItem.ToString(), Tables, Titles);
-                NetManager.Send(stream, quaterData.Serialize(), CommandManager.Commands.QuaterDataSave);
+                var quaterData = new QuaterDataSerialize(comboBoxSubsidiary.SelectedItem.ToString(), comboBoxQuarter.SelectedItem.ToString(), Tables, Titles);
+                NetManager.Send(_stream, quaterData.Serialize(), CommandManager.Commands.QuaterDataSave);
 
-                byte[] input = NetManager.Receive(client, stream);
+                var input = NetManager.Receive(_client, _stream);
                 MessageBox.Show(NetManager.ToString(NetManager.GetData(input)));
             }
             catch (Exception ex)
@@ -65,7 +63,7 @@ namespace Client_WindowsForms
             }
         }
 
-        private DataGridView[] Tables => new DataGridView[] {
+        private DataGridView[] Tables => new [] {
             first_dataGridView,
             second_dataGridView,
             third_dataGridView,
@@ -77,7 +75,7 @@ namespace Client_WindowsForms
             ninth_dataGridView,
             tenth_dataGridView };
 
-        private Label[] Titles => new Label[] {
+        private Label[] Titles => new [] {
             label1,
             label2,
             label3,
@@ -92,16 +90,17 @@ namespace Client_WindowsForms
         {
             try
             {
-                NetManager.Send(stream, NetManager.ToBytes(comboBoxSubsidiary.SelectedItem.ToString()), CommandManager.Commands.AnnualReport);
+                NetManager.Send(_stream, NetManager.ToBytes(comboBoxSubsidiary.SelectedItem.ToString()),
+                                                            CommandManager.Commands.AnnualReport);
 
-                byte[] input = NetManager.Receive(client, stream);
+                var input = NetManager.Receive(_client, _stream);
                 MessageBox.Show(NetManager.ToString(NetManager.GetData(input)));
 
-                byte[] annualReport = NetManager.GetData(NetManager.Receive(client, stream));
-                QuaterDataSerialize annualReportData = new QuaterDataSerialize();
+                var annualReport = NetManager.GetData(NetManager.Receive(_client, _stream));
+                var annualReportData = new QuaterDataSerialize();
                 annualReportData = annualReportData.Deserialize(annualReport);
 
-                for (int i = 0; i < Tables.Length; i++)
+                for (var i = 0; i < Tables.Length; i++)
                 {
                     Tables[i].Columns.Clear();
                     Tables[i].DataSource = annualReportData.Tables[i];

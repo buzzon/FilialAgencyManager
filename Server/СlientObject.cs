@@ -4,32 +4,32 @@ using System.Net.Sockets;
 
 namespace Server
 {
-    class СlientObject
+    internal class СlientObject
     {
-        private TcpClient client;
-        private string clientIp;
+        private readonly TcpClient _client;
+        private readonly string _clientIp;
         public СlientObject(TcpClient tcpClient)
         {
-            client = tcpClient;
-            clientIp = NetManager.GetClientIP(client);
+            _client = tcpClient;
+            _clientIp = NetManager.GetClientIp(_client);
         }
 
         public void Process()
         {
             try
             {
-                Console.WriteLine("{0}: Подключился.", clientIp);
+                Console.WriteLine("{0}: Подключился.", _clientIp);
                 while (true)
                 {
                     try
                     {
-                        NetworkStream stream = client.GetStream();
-                        byte[] input = NetManager.Receive(client, stream);
-                        CommandManager.CommandHandler(stream, input, clientIp);
+                        var stream = _client.GetStream();
+                        var input = NetManager.Receive(_client, stream);
+                        CommandManager.CommandHandler(stream, input, _clientIp);
                     }
                     catch (Exception)
                     {
-                        Console.WriteLine("{0}: Отключился.", clientIp);
+                        Console.WriteLine("{0}: Отключился.", _clientIp);
                         break;
                     }
                 }
@@ -40,7 +40,7 @@ namespace Server
             }
             finally
             {
-                NetManager.Disconnect(client);
+                NetManager.Disconnect(_client);
             }
         }
     }

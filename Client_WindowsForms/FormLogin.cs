@@ -1,5 +1,4 @@
-﻿using Libs;
-using System;
+﻿using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Windows.Forms;
@@ -8,19 +7,19 @@ namespace Client_WindowsForms
 {
     public partial class FormLogin : Form
     {
-        const int port = 8888;
-        const string address = "127.0.0.1";
-        TcpClient client = null;
-        NetworkStream stream;
+        private const int Port = 8888;
+        private const string Address = "127.0.0.1";
+        private readonly TcpClient _client;
+        public NetworkStream Stream { get; set; }
 
         public FormLogin()
         {
             InitializeComponent();
             try
             {
-                client = new TcpClient();
-                client.Connect(IPAddress.Parse(address), port);
-                stream = client.GetStream();
+                _client = new TcpClient();
+                _client.Connect(IPAddress.Parse(Address), Port);
+                Stream = _client.GetStream();
             }
             catch (Exception ex)
             {
@@ -28,11 +27,13 @@ namespace Client_WindowsForms
             }
         }
 
+
+
         private void buttonAuthorization_Click(object sender, EventArgs e)
         {
             try
             {
-                FormGetQuaterData getQuaterData = new FormGetQuaterData(client);
+                var getQuaterData = new FormGetQuaterData(_client);
                 Hide();
                 getQuaterData.ShowDialog(this);
             }

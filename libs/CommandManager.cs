@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 
@@ -9,7 +10,7 @@ namespace Libs
     {
         public enum Commands : byte
         {
-            NULL,
+            Null,
             SubsidiaryAdd,
             SubsidiaryLoad,
             QuaterDataSave,
@@ -21,7 +22,7 @@ namespace Libs
 
         public static void CommandHandler(NetworkStream stream, byte[] input, string clientIp)
         {
-            byte[] inputData = NetManager.GetData(input);
+            var inputData = NetManager.GetData(input);
 
             switch ((Commands)input[0])
             {
@@ -37,6 +38,8 @@ namespace Libs
                 case Commands.AnnualReport:
                     AnnualReport(stream, inputData, clientIp);
                     break;
+                case Commands.Null:
+                    break;
                 default:
                     Console.WriteLine("{0}: {1}({2});", clientIp, ((Commands)input[0]).ToString(), inputData);
                     break;
@@ -45,31 +48,31 @@ namespace Libs
 
         private static void AnnualReport(NetworkStream stream, byte[] inputData, string clientIp)
         {
-            string subsidiary = NetManager.ToString(inputData);
+            var subsidiary = NetManager.ToString(inputData);
 
             if (!Directory.Exists(Folder + "/" + subsidiary))
             {
-                string message = String.Format("Данных для \"{0}\" не обнаружено.", subsidiary);
+                var message = $"Данных для \"{subsidiary}\" не обнаружено.";
                 NetManager.Send(stream, NetManager.ToBytes(message));
                 Console.WriteLine("{0}: {1}", clientIp, message);
             }
             else
             {
-                string quaters = string.Empty;
+                var quaters = string.Empty;
 
-                QuaterDataSerialize annualReport = new QuaterDataSerialize();
+                var annualReport = new QuaterDataSerialize();
 
                 foreach (var item in new DirectoryInfo(Folder + "/" + subsidiary).GetFiles())
                 {
                     quaters += " " + Path.GetFileNameWithoutExtension(item.Name);
 
-                    QuaterDataSerialize quater = new QuaterDataSerialize();
-                    byte[] vs = File.ReadAllBytes(Folder + "/" + subsidiary + "/" + item.Name);
+                    var quater = new QuaterDataSerialize();
+                    var vs = File.ReadAllBytes(Folder + "/" + subsidiary + "/" + item.Name);
 
                     annualReport.AddData(quater.Deserialize(vs));
                 }
                 
-                string message = String.Format("Отчет построен по данным за{0}.", quaters);
+                var message = $"Отчет построен по данным за{quaters}.";
                 NetManager.Send(stream, NetManager.ToBytes(message));
                 Console.WriteLine("{0}: {1}", clientIp, message);
 
@@ -84,11 +87,11 @@ namespace Libs
                 QuaterDataSerialize quaterData = new QuaterDataSerialize();
                 quaterData = quaterData.Deserialize(inputData);
 
-                if (!Directory.Exists(Folder + "/" + quaterData.subsidiary))
-                    Directory.CreateDirectory(Folder + "/" + quaterData.subsidiary);
+                if (!Directory.Exists(Folder + "/" + quaterData.Subsidiary))
+                    Directory.CreateDirectory(Folder + "/" + quaterData.Subsidiary);
 
-                File.WriteAllBytes(Folder + "/" + quaterData.subsidiary + "/" + quaterData.quater + ".dat", inputData);
-                string message = String.Format("Получены данные \"{0}\" за {1} квартал.", quaterData.subsidiary, quaterData.quater);
+                File.WriteAllBytes(Folder + "/" + quaterData.Subsidiary + "/" + quaterData.Quater + ".dat", inputData);
+                var message = $"Получены данные \"{quaterData.Subsidiary}\" за {quaterData.Quater} квартал.";
                 NetManager.Send(stream, NetManager.ToBytes(message));
                 Console.WriteLine("{0}: {1}", clientIp, message);
             }
@@ -100,26 +103,24 @@ namespace Libs
 
         private static void SubsidiaryLoad(NetworkStream stream, string clientIp)
         {
-            string Subsidiarys = String.Empty;
+            var subsidiarys = string.Empty;
             if (File.Exists(SubsidiaryManager.FilePath))
-                foreach (var item in File.ReadAllLines(SubsidiaryManager.FilePath))
-                    Subsidiarys += item + "\n";
+                subsidiarys = File.ReadAllLines(SubsidiaryManager.FilePath).Aggregate(subsidiarys, 
+                    (current, item) => current + (item + "\n"));
 
-            NetManager.Send(stream, NetManager.ToBytes(Subsidiarys));
+            NetManager.Send(stream, NetManager.ToBytes(subsidiarys));
             Console.WriteLine("{0}: Загружен список филиалов.", clientIp);
         }
 
         private static void SubsidiaryAdd(NetworkStream stream, byte[] inputData, string clientIp)
         {
-            string subsidiary = Encoding.UTF8.GetString(inputData);
+            var subsidiary = Encoding.UTF8.GetString(inputData);
+            if (subsidiary == string.Empty) return;
 
-            if (subsidiary != String.Empty)
-            {
-                SubsidiaryManager.Add(subsidiary);
-                string message = String.Format("Добавлен новый филиал: {0}.", subsidiary);
-                NetManager.Send(stream, NetManager.ToBytes(message));
-                Console.WriteLine("{0}: {1}.", clientIp, message);
-            }
+            SubsidiaryManager.Add(subsidiary);
+            var message = $"Добавлен новый филиал: {subsidiary}.";
+            NetManager.Send(stream, NetManager.ToBytes(message));
+            Console.WriteLine("{0}: {1}.", clientIp, message);
         }
     }
 }
