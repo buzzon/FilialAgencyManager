@@ -10,7 +10,8 @@ namespace Client_WindowsForms
     internal class TableManager
     {
         private delegate void TableFiller();
-        private readonly Dictionary<DataGridView, TableFiller> _tablesFillers = new Dictionary<DataGridView, TableFiller>();
+        private readonly Dictionary<DataGridView, TableFiller> _tablesFillers 
+            = new Dictionary<DataGridView, TableFiller>();
 
         public TableManager(DataGridView[] tables)
         {

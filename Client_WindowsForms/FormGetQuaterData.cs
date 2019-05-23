@@ -21,6 +21,23 @@ namespace Client_WindowsForms
             _tableManager = new TableManager(Tables);
             TableManager.InitializeTables(Tables);
 
+            _oldTables = Tables;
+            for (var i = 0; i < Tables.Length; i++)
+            {
+                _oldTables[i] = new DataGridView();
+                {
+                    _oldTables[i].ColumnHeadersHeightSizeMode = Tables[i].ColumnHeadersHeightSizeMode;
+                    for (var j = 0; j < Tables[i].Columns.Count; j++)
+                    {
+                        _oldTables[i].Columns.Add(j.ToString(), Tables[i].Columns[j].HeaderText);
+                        _oldTables[i].Columns[j].Width = Tables[i].Columns[j].Width;
+                        _oldTables[i].Columns[j].AutoSizeMode = Tables[i].Columns[j].AutoSizeMode;
+                        _oldTables[i].Columns[j].ReadOnly = Tables[i].Columns[j].ReadOnly;
+                        _oldTables[i].Columns[j].SortMode = Tables[i].Columns[j].SortMode;
+                    }
+                }
+            }
+
             LoadSubsidiaryInCombobox();
         }
 
@@ -75,6 +92,8 @@ namespace Client_WindowsForms
             ninth_dataGridView,
             tenth_dataGridView };
 
+        private DataGridView[] _oldTables;
+
         private Label[] Titles => new [] {
             label1,
             label2,
@@ -104,6 +123,15 @@ namespace Client_WindowsForms
                 {
                     Tables[i].Columns.Clear();
                     Tables[i].DataSource = annualReportData.Tables[i];
+                    Tables[i].ColumnHeadersHeightSizeMode = _oldTables[i].ColumnHeadersHeightSizeMode;
+                    for (var j = 0; j < Tables[i].Columns.Count; j++)
+                    {
+                        Tables[i].Columns[j].Width = _oldTables[i].Columns[j].Width;
+                        Tables[i].Columns[j].HeaderText = _oldTables[i].Columns[j].HeaderText;
+                        Tables[i].Columns[j].AutoSizeMode = _oldTables[i].Columns[j].AutoSizeMode;
+                        Tables[i].Columns[j].ReadOnly = _oldTables[i].Columns[j].ReadOnly;
+                        Tables[i].Columns[j].SortMode = _oldTables[i].Columns[j].SortMode;
+                    }
                 }
             }
             catch (Exception ex)
