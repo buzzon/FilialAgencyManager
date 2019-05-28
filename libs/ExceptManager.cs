@@ -6,7 +6,7 @@ namespace Libs
     {
         public static void Write(Exception ex)
         {
-            Console.WriteLine(String.Format("[ERROR] : {0}", ex.Message));
+            Console.WriteLine($"[ERROR] : {ex.Message}");
             Console.ReadLine();
         }
     }

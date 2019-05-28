@@ -1,7 +1,4 @@
-﻿using Libs;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
@@ -9,54 +6,72 @@ namespace Libs
 {
     public class NetManager
     {
-        public enum Commands
-        {
-            NULL,
-            ADD_Subsidiary
-        }
-
-        public const char separator = '|';
-
         public static void Disconnect(TcpClient client)
         {
-            if (client != null)
-                try
-                {
-                    client.GetStream().Close();
-                    client.Close();
-                }
-                catch
-                {
-                    client.Close();
-                }
+            if (client == null) return;
+            try
+            {
+                client.GetStream().Close();
+                client.Close();
+            }
+            catch
+            {
+                client.Close();
+            }
         }
 
-        public static string GetClientIP(TcpClient client)
+        public static string GetClientIp(TcpClient client)
         {
             return ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
         }
 
-        public static string Receive(TcpClient client, NetworkStream stream)
+        public static void Send(NetworkStream stream, byte[] bytes, CommandManager.Commands cmd = CommandManager.Commands.Null)
         {
-            byte[] bytes = new byte[client.ReceiveBufferSize];
-            int bytesRead = stream.Read(bytes, 0, client.ReceiveBufferSize);
-            return Encoding.UTF8.GetString(bytes, 0, bytesRead);
+            var bArray = AddByteToArray((byte)cmd, bytes);
+            stream.Write(bArray, 0, bArray.Length);
         }
 
-        public static string GetMessage(string receive)
+        public static byte[] Receive(TcpClient client, NetworkStream stream)
         {
-            return receive.Substring(GetCommand(receive).Length + 1);
+            var bytes = new byte[client.ReceiveBufferSize];
+            var bytesRead = stream.Read(bytes, 0, bytes.Length);
+
+            var newArray = new byte[bytesRead];
+            for (var i = 0; i < bytesRead; i++)
+                newArray[i] = bytes[i];
+
+            return newArray;
         }
 
-        public static string GetCommand(string receive)
+        public static byte[] GetData(byte[] array)
         {
-            return receive.Split(separator)[0];
+            var newArray = new byte[array.Length - 1];
+
+            for (var i = 0; i < newArray.Length; i++)
+                newArray[i] = array[i + 1];
+
+            return newArray;
         }
 
-        public static void Send(NetworkStream stream, string message, Commands cmd = Commands.NULL)
+        public static string ToString(byte[] bytes)
         {
-            byte[] bytes = Encoding.UTF8.GetBytes(string.Format("{0}{1}{2}", cmd.ToString(), separator, message));
-            stream.Write(bytes, 0, bytes.Length);
+            return Encoding.UTF8.GetString(bytes);
+        }
+
+        public static byte[] ToBytes(string messgae)
+        {
+            return Encoding.UTF8.GetBytes(messgae);
+        }
+
+        public static byte[] AddByteToArray(byte _byte, byte[] array)
+        {
+            var newArray = new byte[array.Length + 1];
+            newArray[0] = _byte;
+
+            for (var i = 0; i < array.Length; i++)
+                newArray[i + 1] = array[i];
+
+            return newArray;
         }
     }
 }

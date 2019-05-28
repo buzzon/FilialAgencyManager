@@ -6,27 +6,27 @@ using System.Threading;
 
 namespace Server
 {
-    class ServerProgram
+    internal class ServerProgram
     {
-        const int port = 8888;
-        const string address = "127.0.0.1";
+        private const int Port = 8888;
+        private const string Address = "127.0.0.1";
 
-        static TcpListener listener;
-        static void Main(string[] args)
+        private static TcpListener _listener;
+
+        private static void Main()
         {
             try
             {
-                listener = new TcpListener(IPAddress.Parse(address), port);
-                listener.Start();
+                _listener = new TcpListener(IPAddress.Parse(Address), Port);
+                _listener.Start();
                 Console.WriteLine("Ожидание подключений...");
 
                 while (true)
                 {
-                    TcpClient client = listener.AcceptTcpClient();
-                    ClientManager clientObject = new ClientManager(client);
+                    var client = _listener.AcceptTcpClient();
+                    var clientObject = new СlientObject(client);
 
-                    // создаем новый поток для обслуживания нового клиента
-                    Thread clientThread = new Thread(new ThreadStart(clientObject.Process));
+                    var clientThread = new Thread(clientObject.Process);
                     clientThread.Start();
                 }
             }
@@ -36,8 +36,7 @@ namespace Server
             }
             finally
             {
-                if (listener != null)
-                    listener.Stop();
+                _listener?.Stop();
             }
         }
     }
