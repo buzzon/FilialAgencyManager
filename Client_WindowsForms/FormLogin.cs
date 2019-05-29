@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Client_WindowsForms
@@ -8,7 +10,6 @@ namespace Client_WindowsForms
     public partial class FormLogin : Form
     {
         private const int Port = 8888;
-        private const string Address = "127.0.0.1";
         private readonly TcpClient _client;
         public NetworkStream Stream { get; set; }
 
@@ -18,13 +19,27 @@ namespace Client_WindowsForms
             try
             {
                 _client = new TcpClient();
-                _client.Connect(IPAddress.Parse(Address), Port);
+                _client.Connect(IPAddress.Parse(GetIp()), Port);
                 Stream = _client.GetStream();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private static string GetIp()
+        {
+            if (!File.Exists("ip.ini"))
+                throw new ArgumentException("Файл ip.ini не обнаружен");
+
+            string ip;
+            using (var sr = new StreamReader("ip.ini", Encoding.Default))
+            {
+                ip = sr.ReadLine();
+                if (ip == "") throw new ArgumentException("Укажите адрес сервера в файле ip.ini в формате 0.0.0.0");
+            }
+            return ip;
         }
 
 
