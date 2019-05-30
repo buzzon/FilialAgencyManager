@@ -55,10 +55,10 @@ namespace Client_WindowsForms
         private void DataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
 
-            string cellTxt = (string)((DataGridView)sender).CurrentCell.Value;
-            if (!double.TryParse(cellTxt, out double num))
+            var cellTxt = (string)((DataGridView)sender).CurrentCell.Value;
+            if (!double.TryParse(cellTxt, out var num))
             {
-                MessageBox.Show("Введены некорректные данные.");
+                MessageBox.Show(@"Введены некорректные данные.");
                 ((DataGridView)sender).CurrentCell.Value = 0;
             }
 

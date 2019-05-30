@@ -63,7 +63,7 @@ namespace Libs
 
                 foreach (var item in new DirectoryInfo(Folder + "/" + subsidiary).GetFiles())
                 {
-                    quaters += "," + Path.GetFileNameWithoutExtension(item.Name).Split('-')[1];
+                    quaters += ", " + Path.GetFileNameWithoutExtension(item.Name);
 
                     var quater = new QuaterDataSerialize();
                     var vs = File.ReadAllBytes(Folder + "/" + subsidiary + "/" + item.Name);
