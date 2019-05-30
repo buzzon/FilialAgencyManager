@@ -11,9 +11,8 @@ namespace Client_WindowsForms
         private readonly System.Net.Sockets.TcpClient _client;
         private readonly System.Net.Sockets.NetworkStream _stream;
 
-        public FormGetQuaterData(System.Net.Sockets.TcpClient client, Form mainForm)
+        public FormGetQuaterData(System.Net.Sockets.TcpClient client)
         {
-            MainForm = mainForm;
             InitializeComponent();
 
             try
@@ -112,13 +111,13 @@ namespace Client_WindowsForms
         {
             if (comboBoxSubsidiary.SelectedItem == null)
             {
-                MessageBox.Show(@"Филиал не указан или указан не верно.");
+                MessageBox.Show(@"Филиал не указан или указан неверно.");
                 return;
             }
 
             if (comboBoxQuarter.SelectedItem == null)
             {
-                MessageBox.Show(@"Квартал не указан или указан не верно.");
+                MessageBox.Show(@"Квартал не указан или указан неверно.");
                 return;
             }
 
@@ -155,7 +154,6 @@ namespace Client_WindowsForms
             label8,
             label9 };
 
-        public Form MainForm { get; set; }
 
         private void ButtonDownloadAnnualReport_Click(object sender, EventArgs e)
         {

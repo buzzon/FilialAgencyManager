@@ -12,6 +12,7 @@ namespace Libs
         {
             Null,
             SubsidiaryAdd,
+            SubsidiaryRemove,
             SubsidiaryLoad,
             QuaterDataSave,
             AnnualReport,
@@ -40,10 +41,24 @@ namespace Libs
                     break;
                 case Commands.Null:
                     break;
+                case Commands.SubsidiaryRemove:
+                    SubsidiaryRemove(stream, inputData, clientIp);
+                    break;
                 default:
                     Console.WriteLine("{0}: {1}({2});", clientIp, ((Commands)input[0]).ToString(), inputData);
                     break;
             }
+        }
+
+        private static void SubsidiaryRemove(NetworkStream stream, byte[] inputData, string clientIp)
+        {
+            var subsidiary = Encoding.UTF8.GetString(inputData);
+            if (subsidiary == string.Empty) return;
+
+            SubsidiaryManager.Remove(subsidiary);
+            var message = $"Удалён филиал: {subsidiary}"; 
+            NetManager.Send(stream, NetManager.ToBytes(message));
+            Console.WriteLine("{0}: {1}.", clientIp, message);
         }
 
         private static void AnnualReport(NetworkStream stream, byte[] inputData, string clientIp)
@@ -119,7 +134,7 @@ namespace Libs
             if (subsidiary == string.Empty) return;
 
             SubsidiaryManager.Add(subsidiary);
-            var message = $"Добавлен новый филиал: {subsidiary}.";
+            var message = $"Добавлен новый филиал: {subsidiary}";
             NetManager.Send(stream, NetManager.ToBytes(message));
             Console.WriteLine("{0}: {1}.", clientIp, message);
         }

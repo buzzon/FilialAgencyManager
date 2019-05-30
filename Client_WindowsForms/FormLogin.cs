@@ -44,17 +44,30 @@ namespace Client_WindowsForms
 
         private void buttonAuthorization_Click(object sender, EventArgs e)
         {
-            var getQuaterData = new FormGetQuaterData(_client, this);
             Hide();
-            try
-            {
-                getQuaterData.ShowDialog(this);
-            }
-            catch
-            {
-                // ignored
-            }
 
+            if (textBoxLogin.Text == "Admin")
+            {
+                try
+                {
+                    new FormAdministrator(_client).ShowDialog(this);
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+            else
+            {
+                try
+                {
+                    new FormGetQuaterData(_client).ShowDialog(this);
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
             Close();
         }
     }

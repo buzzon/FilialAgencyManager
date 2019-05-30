@@ -1,6 +1,7 @@
 ﻿using Libs;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace Libs
 {
@@ -22,6 +23,15 @@ namespace Libs
 
         public static void Remove(string subsidiaryName)
         {
+            try
+            {
+                File.WriteAllLines(FilePath,
+                    File.ReadLines(FilePath).Where(l => l != subsidiaryName).ToList());
+            }
+            catch (Exception ex)
+            {
+                ExceptManager.Write(ex);
+            }
         }
     }
 }
