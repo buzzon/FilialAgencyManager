@@ -55,7 +55,7 @@ namespace Client_WindowsForms
         {
 
             var cellTxt = (string)((DataGridView)sender).CurrentCell.Value;
-            if (!double.TryParse(cellTxt, out var num))
+            if (!double.TryParse(cellTxt, out _))
             {
                 MessageBox.Show(@"Введены некорректные данные.");
                 ((DataGridView)sender).CurrentCell.Value = 0;
@@ -121,7 +121,15 @@ namespace Client_WindowsForms
                 return;
             }
 
-            var quaterData = new QuaterDataSerialize(comboBoxSubsidiary.SelectedItem.ToString(), comboBoxQuarter.SelectedItem.ToString(), Tables, Titles);
+            var item = comboBoxSubsidiary.SelectedItem;
+            LoadSubsidiaryInCombobox();
+            if (!comboBoxSubsidiary.Items.Contains(item))
+            {
+                MessageBox.Show(@"Филиал был удалён.");
+                return;
+            }
+            
+            var quaterData = new QuaterDataSerialize(item.ToString(), item.ToString(), Tables, Titles);
             NetManager.Send(_stream, quaterData.Serialize(), CommandManager.Commands.QuaterDataSave);
 
             var input = NetManager.Receive(_client, _stream);
@@ -191,6 +199,8 @@ namespace Client_WindowsForms
                     Tables[i].Columns[j].DefaultCellStyle = _oldTables[i].Columns[j].DefaultCellStyle;
                 }
             }
+
+            LoadSubsidiaryInCombobox();
         }
 
         private void buttonSaveExcel_Click(object sender, EventArgs e)
