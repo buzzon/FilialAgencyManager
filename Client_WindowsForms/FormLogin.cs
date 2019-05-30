@@ -42,24 +42,12 @@ namespace Client_WindowsForms
             return ip;
         }
 
-
-
         private void buttonAuthorization_Click(object sender, EventArgs e)
         {
-            try
-            {
-                var getQuaterData = new FormGetQuaterData(_client);
-                Hide();
-                getQuaterData.ShowDialog(this);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                Close();
-            }
+            var getQuaterData = new FormGetQuaterData(_client, this);
+            Hide();
+            getQuaterData.ShowDialog(this);
+            Close();
         }
     }
 }

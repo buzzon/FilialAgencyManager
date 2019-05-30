@@ -10,9 +10,11 @@ namespace Client_WindowsForms
 
         private readonly System.Net.Sockets.TcpClient _client;
         private readonly System.Net.Sockets.NetworkStream _stream;
+        private Form _mainForm;
 
-        public FormGetQuaterData(System.Net.Sockets.TcpClient client)
+        public FormGetQuaterData(System.Net.Sockets.TcpClient client , Form mainForm)
         {
+            _mainForm = mainForm;
             InitializeComponent();
 
             _client = client;
@@ -138,6 +140,20 @@ namespace Client_WindowsForms
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void buttonSaveExcel_Click(object sender, EventArgs e)
+        {
+            ExcelManager.Create(false);
+            ExcelManager.Fill(Tables, comboBoxQuarter.Text, comboBoxSubsidiary.Text);
+            ExcelManager.ExportToExcel();
+
+        }
+
+        private void buttonOpenExcel_Click(object sender, EventArgs e)
+        {
+            ExcelManager.Create(true);
+            ExcelManager.Fill(Tables, comboBoxQuarter.Text, comboBoxSubsidiary.Text);
         }
     }
 }
