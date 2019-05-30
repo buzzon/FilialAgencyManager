@@ -45,24 +45,32 @@ namespace Client_WindowsForms
 
         private void DataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            if (((DataGridView)sender).CurrentCell.ColumnIndex == 1)
+
+            string cellTxt = (string)((DataGridView)sender).CurrentCell.Value;
+            if (!double.TryParse(cellTxt, out double num))
             {
-                string cellTxt = (string)((DataGridView)sender).CurrentCell.Value;
-                if (!double.TryParse(cellTxt, out double num))
-                {
-                    MessageBox.Show("Введены некорректные данные.");
-                    ((DataGridView)sender).CurrentCell.Value = 0;
-                    return;
-                }
+                MessageBox.Show("Введены некорректные данные.");
+                ((DataGridView)sender).CurrentCell.Value = 0;
             }
 
             _tableManager.FillTable((DataGridView)sender);
         }
 
 
+        private void DataGridView_KeyPress(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                ((DataGridView)sender).CurrentCell.Value = 0;
+            }
+
+            ((DataGridView)sender).EditingControlShowing += dataGridView_EditingControlShowing;
+            _tableManager.FillTable((DataGridView)sender);
+
+        }
+
         private void dataGridView_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
-            if (((DataGridView)sender).CurrentCell.ColumnIndex != 1) return;
             var tb = (TextBox)e.Control;
             tb.KeyPress += tb_KeyPress;
         }
@@ -95,7 +103,7 @@ namespace Client_WindowsForms
         {
             if (comboBoxSubsidiary.SelectedItem == null)
             {
-                MessageBox.Show(@"Не указан квартал или филиал.");
+                MessageBox.Show("Не указан квартал или филиал.");
                 return;
             }
 
