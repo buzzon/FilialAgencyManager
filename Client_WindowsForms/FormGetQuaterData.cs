@@ -12,7 +12,7 @@ namespace Client_WindowsForms
         private readonly System.Net.Sockets.NetworkStream _stream;
         private Form _mainForm;
 
-        public FormGetQuaterData(System.Net.Sockets.TcpClient client , Form mainForm)
+        public FormGetQuaterData(System.Net.Sockets.TcpClient client, Form mainForm)
         {
             _mainForm = mainForm;
             InitializeComponent();
@@ -36,6 +36,7 @@ namespace Client_WindowsForms
                         _oldTables[i].Columns[j].AutoSizeMode = Tables[i].Columns[j].AutoSizeMode;
                         _oldTables[i].Columns[j].ReadOnly = Tables[i].Columns[j].ReadOnly;
                         _oldTables[i].Columns[j].SortMode = Tables[i].Columns[j].SortMode;
+                        _oldTables[i].Columns[j].DefaultCellStyle = Tables[i].Columns[j].DefaultCellStyle;
                     }
                 }
             }
@@ -98,7 +99,7 @@ namespace Client_WindowsForms
             }
         }
 
-        private DataGridView[] Tables => new [] {
+        private DataGridView[] Tables => new[] {
             first_dataGridView,
             second_dataGridView,
             third_dataGridView,
@@ -112,7 +113,7 @@ namespace Client_WindowsForms
 
         private DataGridView[] _oldTables;
 
-        private Label[] Titles => new [] {
+        private Label[] Titles => new[] {
             label1,
             label2,
             label3,
@@ -134,30 +135,31 @@ namespace Client_WindowsForms
             NetManager.Send(_stream, NetManager.ToBytes(comboBoxSubsidiary.SelectedItem.ToString()),
                                                             CommandManager.Commands.AnnualReport);
 
-                var input = NetManager.Receive(_client, _stream);
-                MessageBox.Show(NetManager.ToString(NetManager.GetData(input)));
+            var input = NetManager.Receive(_client, _stream);
+            MessageBox.Show(NetManager.ToString(NetManager.GetData(input)));
 
-                var annualReport = NetManager.GetData(NetManager.Receive(_client, _stream));
-                var annualReportData = new QuaterDataSerialize();
-                annualReportData = annualReportData.Deserialize(annualReport);
+            var annualReport = NetManager.GetData(NetManager.Receive(_client, _stream));
+            var annualReportData = new QuaterDataSerialize();
+            annualReportData = annualReportData.Deserialize(annualReport);
 
-                if (annualReportData.Tables == null)
-                    return;
+            if (annualReportData.Tables == null)
+                return;
 
-                for (var i = 0; i < Tables.Length; i++)
+            for (var i = 0; i < Tables.Length; i++)
+            {
+                Tables[i].Columns.Clear();
+                Tables[i].DataSource = annualReportData.Tables[i];
+                Tables[i].ColumnHeadersHeightSizeMode = _oldTables[i].ColumnHeadersHeightSizeMode;
+                for (var j = 0; j < Tables[i].Columns.Count; j++)
                 {
-                    Tables[i].Columns.Clear();
-                    Tables[i].DataSource = annualReportData.Tables[i];
-                    Tables[i].ColumnHeadersHeightSizeMode = _oldTables[i].ColumnHeadersHeightSizeMode;
-                    for (var j = 0; j < Tables[i].Columns.Count; j++)
-                    {
-                        Tables[i].Columns[j].Width = _oldTables[i].Columns[j].Width;
-                        Tables[i].Columns[j].HeaderText = _oldTables[i].Columns[j].HeaderText;
-                        Tables[i].Columns[j].AutoSizeMode = _oldTables[i].Columns[j].AutoSizeMode;
-                        Tables[i].Columns[j].ReadOnly = _oldTables[i].Columns[j].ReadOnly;
-                        Tables[i].Columns[j].SortMode = _oldTables[i].Columns[j].SortMode;
-                    }
+                    Tables[i].Columns[j].Width = _oldTables[i].Columns[j].Width;
+                    Tables[i].Columns[j].HeaderText = _oldTables[i].Columns[j].HeaderText;
+                    Tables[i].Columns[j].AutoSizeMode = _oldTables[i].Columns[j].AutoSizeMode;
+                    Tables[i].Columns[j].ReadOnly = _oldTables[i].Columns[j].ReadOnly;
+                    Tables[i].Columns[j].SortMode = _oldTables[i].Columns[j].SortMode;
+                    Tables[i].Columns[j].DefaultCellStyle = _oldTables[i].Columns[j].DefaultCellStyle;
                 }
+            }
         }
 
         private void buttonSaveExcel_Click(object sender, EventArgs e)
