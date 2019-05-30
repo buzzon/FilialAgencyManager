@@ -1,4 +1,7 @@
-﻿namespace Client_WindowsForms
+﻿using System;
+using System.Windows.Forms;
+
+namespace Client_WindowsForms
 {
     partial class FormGetQuaterData
     {
@@ -159,6 +162,7 @@
             this.first_dataGridView.Size = new System.Drawing.Size(978, 142);
             this.first_dataGridView.TabIndex = 5;
             this.first_dataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_CellEndEdit);
+            this.first_dataGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(dataGridView1_EditingControlShowing);
             // 
             // Column1
             // 
@@ -951,6 +955,7 @@
             this.ResumeLayout(false);
 
         }
+
 
         #endregion
 

@@ -48,6 +48,22 @@ namespace Client_WindowsForms
             _tableManager.FillTable((DataGridView)sender);
         }
 
+
+        private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (((DataGridView)sender).CurrentCell.ColumnIndex == 1)
+            {
+                TextBox tb = (TextBox)e.Control;
+                tb.KeyPress += new KeyPressEventHandler(tb_KeyPress);
+            }
+        }
+
+        private void tb_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!((e.KeyChar >= (char)48 && e.KeyChar <= (char)57) || (e.KeyChar == (char)8) || (e.KeyChar == (char)45) || (e.KeyChar == (char)44)))
+                e.Handled = true;
+        }
+
         private void LoadSubsidiaryInCombobox()
         {
             try
@@ -76,9 +92,9 @@ namespace Client_WindowsForms
                 var input = NetManager.Receive(_client, _stream);
                 MessageBox.Show(NetManager.ToString(NetManager.GetData(input)));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Не указан квартал или филиал.");
             }
         }
 
@@ -136,9 +152,9 @@ namespace Client_WindowsForms
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Данного филиала не существует.");
             }
         }
 
