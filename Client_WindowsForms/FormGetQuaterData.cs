@@ -10,11 +10,10 @@ namespace Client_WindowsForms
 
         private readonly System.Net.Sockets.TcpClient _client;
         private readonly System.Net.Sockets.NetworkStream _stream;
-        private Form _mainForm;
 
         public FormGetQuaterData(System.Net.Sockets.TcpClient client, Form mainForm)
         {
-            _mainForm = mainForm;
+            MainForm = mainForm;
             InitializeComponent();
 
             _client = client;
@@ -52,14 +51,12 @@ namespace Client_WindowsForms
 
         private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
-            if (((DataGridView)sender).CurrentCell.ColumnIndex == 1)
-            {
-                TextBox tb = (TextBox)e.Control;
-                tb.KeyPress += new KeyPressEventHandler(tb_KeyPress);
-            }
+            if (((DataGridView)sender).CurrentCell.ColumnIndex != 1) return;
+            var tb = (TextBox)e.Control;
+            tb.KeyPress += tb_KeyPress;
         }
 
-        private void tb_KeyPress(object sender, KeyPressEventArgs e)
+        private static void tb_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!((e.KeyChar >= (char)48 && e.KeyChar <= (char)57) || (e.KeyChar == (char)8) || (e.KeyChar == (char)45) || (e.KeyChar == (char)44)))
                 e.Handled = true;
@@ -85,18 +82,18 @@ namespace Client_WindowsForms
 
         private void ButtonSend_Click(object sender, EventArgs e)
         {
-            try
+            if (comboBoxSubsidiary.SelectedItem == null)
             {
-                var quaterData = new QuaterDataSerialize(comboBoxSubsidiary.SelectedItem.ToString(), comboBoxQuarter.SelectedItem.ToString(), Tables, Titles);
-                NetManager.Send(_stream, quaterData.Serialize(), CommandManager.Commands.QuaterDataSave);
+                MessageBox.Show(@"Не указан квартал или филиал.");
+                return;
+            }
 
-                var input = NetManager.Receive(_client, _stream);
-                MessageBox.Show(NetManager.ToString(NetManager.GetData(input)));
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Не указан квартал или филиал.");
-            }
+            var quaterData = new QuaterDataSerialize(comboBoxSubsidiary.SelectedItem.ToString(), comboBoxQuarter.SelectedItem.ToString(), Tables, Titles);
+            NetManager.Send(_stream, quaterData.Serialize(), CommandManager.Commands.QuaterDataSave);
+
+            var input = NetManager.Receive(_client, _stream);
+            MessageBox.Show(NetManager.ToString(NetManager.GetData(input)));
+
         }
 
         private DataGridView[] Tables => new[] {
@@ -111,7 +108,7 @@ namespace Client_WindowsForms
             ninth_dataGridView,
             tenth_dataGridView };
 
-        private DataGridView[] _oldTables;
+        private readonly DataGridView[] _oldTables;
 
         private Label[] Titles => new[] {
             label1,
@@ -124,11 +121,13 @@ namespace Client_WindowsForms
             label8,
             label9 };
 
+        public Form MainForm { get; set; }
+
         private void ButtonDownloadAnnualReport_Click(object sender, EventArgs e)
         {
             if (comboBoxSubsidiary.SelectedItem == null)
             {
-                MessageBox.Show("Данного филиала не существует.");
+                MessageBox.Show(@"Данного филиала не существует.");
                 return;
             }
 
