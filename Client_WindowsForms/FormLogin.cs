@@ -30,14 +30,14 @@ namespace Client_WindowsForms
 
         private static string GetIp()
         {
-            if (!File.Exists("ip.ini"))
-                throw new ArgumentException("Файл ip.ini не обнаружен");
+            if (!File.Exists(@"ip.ini"))
+                throw new ArgumentException(@"Файл ip.ini не обнаружен");
 
             string ip;
-            using (var sr = new StreamReader("ip.ini", Encoding.Default))
+            using (var sr = new StreamReader(@"ip.ini", Encoding.Default))
             {
                 ip = sr.ReadLine();
-                if (ip == "") throw new ArgumentException("Укажите адрес сервера в файле ip.ini в формате 0.0.0.0");
+                if (ip == "") throw new ArgumentException(@"Укажите адрес сервера в файле ip.ini в формате 0.0.0.0");
             }
             return ip;
         }
@@ -46,7 +46,15 @@ namespace Client_WindowsForms
         {
             var getQuaterData = new FormGetQuaterData(_client, this);
             Hide();
-            getQuaterData.ShowDialog(this);
+            try
+            {
+                getQuaterData.ShowDialog(this);
+            }
+            catch
+            {
+                // ignored
+            }
+
             Close();
         }
     }

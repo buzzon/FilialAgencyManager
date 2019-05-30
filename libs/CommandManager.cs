@@ -49,39 +49,36 @@ namespace Libs
         private static void AnnualReport(NetworkStream stream, byte[] inputData, string clientIp)
         {
             var subsidiary = NetManager.ToString(inputData);
+            var annualReport = new QuaterDataSerialize();
 
             if (!Directory.Exists(Folder + "/" + subsidiary))
             {
                 var message = $"Данных для \"{subsidiary}\" не обнаружено.";
                 NetManager.Send(stream, NetManager.ToBytes(message));
                 Console.WriteLine("{0}: {1}", clientIp, message);
-
-                var annualReport = new QuaterDataSerialize();
-                NetManager.Send(stream, annualReport.Serialize());
-
             }
             else
             {
                 var quaters = string.Empty;
 
-                var annualReport = new QuaterDataSerialize();
-
                 foreach (var item in new DirectoryInfo(Folder + "/" + subsidiary).GetFiles())
                 {
-                    quaters += " " + Path.GetFileNameWithoutExtension(item.Name);
+                    quaters += "," + Path.GetFileNameWithoutExtension(item.Name).Split('-')[1];
 
                     var quater = new QuaterDataSerialize();
                     var vs = File.ReadAllBytes(Folder + "/" + subsidiary + "/" + item.Name);
 
                     annualReport.AddData(quater.Deserialize(vs));
                 }
-                
+
+                quaters = quaters.Substring(1, quaters.Length - 1);
+
                 var message = $"Отчет построен по данным за{quaters}.";
                 NetManager.Send(stream, NetManager.ToBytes(message));
                 Console.WriteLine("{0}: {1}", clientIp, message);
-
-                NetManager.Send(stream, annualReport.Serialize());
             }
+
+            NetManager.Send(stream, annualReport.Serialize());
         }
 
         private static void QuaterDataSave(NetworkStream stream, byte[] inputData , string clientIp)

@@ -16,31 +16,40 @@ namespace Client_WindowsForms
             MainForm = mainForm;
             InitializeComponent();
 
-            _client = client;
-            _stream = client.GetStream();
-
-            _tableManager = new TableManager(Tables);
-            TableManager.InitializeTables(Tables);
-
-            _oldTables = Tables;
-            for (var i = 0; i < Tables.Length; i++)
+            try
             {
-                _oldTables[i] = new DataGridView();
+                _client = client;
+                _stream = client.GetStream();
+
+
+
+                _tableManager = new TableManager(Tables);
+                TableManager.InitializeTables(Tables);
+
+                _oldTables = Tables;
+                for (var i = 0; i < Tables.Length; i++)
                 {
-                    _oldTables[i].ColumnHeadersHeightSizeMode = Tables[i].ColumnHeadersHeightSizeMode;
-                    for (var j = 0; j < Tables[i].Columns.Count; j++)
+                    _oldTables[i] = new DataGridView();
                     {
-                        _oldTables[i].Columns.Add(j.ToString(), Tables[i].Columns[j].HeaderText);
-                        _oldTables[i].Columns[j].Width = Tables[i].Columns[j].Width;
-                        _oldTables[i].Columns[j].AutoSizeMode = Tables[i].Columns[j].AutoSizeMode;
-                        _oldTables[i].Columns[j].ReadOnly = Tables[i].Columns[j].ReadOnly;
-                        _oldTables[i].Columns[j].SortMode = Tables[i].Columns[j].SortMode;
-                        _oldTables[i].Columns[j].DefaultCellStyle = Tables[i].Columns[j].DefaultCellStyle;
+                        _oldTables[i].ColumnHeadersHeightSizeMode = Tables[i].ColumnHeadersHeightSizeMode;
+                        for (var j = 0; j < Tables[i].Columns.Count; j++)
+                        {
+                            _oldTables[i].Columns.Add(j.ToString(), Tables[i].Columns[j].HeaderText);
+                            _oldTables[i].Columns[j].Width = Tables[i].Columns[j].Width;
+                            _oldTables[i].Columns[j].AutoSizeMode = Tables[i].Columns[j].AutoSizeMode;
+                            _oldTables[i].Columns[j].ReadOnly = Tables[i].Columns[j].ReadOnly;
+                            _oldTables[i].Columns[j].SortMode = Tables[i].Columns[j].SortMode;
+                            _oldTables[i].Columns[j].DefaultCellStyle = Tables[i].Columns[j].DefaultCellStyle;
+                        }
                     }
                 }
-            }
 
-            LoadSubsidiaryInCombobox();
+                LoadSubsidiaryInCombobox();
+            }
+            catch (Exception)
+            {
+                Close();
+            }
         }
 
         private void DataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -84,7 +93,13 @@ namespace Client_WindowsForms
         {
             if (comboBoxSubsidiary.SelectedItem == null)
             {
-                MessageBox.Show(@"Не указан квартал или филиал.");
+                MessageBox.Show(@"Филиал не указан или указан не верно.");
+                return;
+            }
+
+            if (comboBoxQuarter.SelectedItem == null)
+            {
+                MessageBox.Show(@"Квартал не указан или указан не верно.");
                 return;
             }
 
