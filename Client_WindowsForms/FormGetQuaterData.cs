@@ -54,20 +54,39 @@ namespace Client_WindowsForms
 
         private void DataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
+
+            string cellTxt = (string)((DataGridView)sender).CurrentCell.Value;
+            if (!double.TryParse(cellTxt, out double num))
+            {
+                MessageBox.Show("Введены некорректные данные.");
+                ((DataGridView)sender).CurrentCell.Value = 0;
+            }
+
             _tableManager.FillTable((DataGridView)sender);
         }
 
 
-        private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        private void DataGridView_KeyPress(object sender, KeyEventArgs e)
         {
-            if (((DataGridView)sender).CurrentCell.ColumnIndex != 1) return;
+            if (e.KeyCode == Keys.Delete)
+            {
+                ((DataGridView)sender).CurrentCell.Value = 0;
+            }
+
+            ((DataGridView)sender).EditingControlShowing += dataGridView_EditingControlShowing;
+            _tableManager.FillTable((DataGridView)sender);
+
+        }
+
+        private void dataGridView_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
             var tb = (TextBox)e.Control;
             tb.KeyPress += tb_KeyPress;
         }
 
         private static void tb_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!((e.KeyChar >= (char)48 && e.KeyChar <= (char)57) || (e.KeyChar == (char)8) || (e.KeyChar == (char)45) || (e.KeyChar == (char)44)))
+            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == '.' || char.IsControl(e.KeyChar)))
                 e.Handled = true;
         }
 

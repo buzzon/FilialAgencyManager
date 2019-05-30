@@ -162,7 +162,8 @@ namespace Client_WindowsForms
             this.first_dataGridView.Size = new System.Drawing.Size(978, 142);
             this.first_dataGridView.TabIndex = 5;
             this.first_dataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_CellEndEdit);
-            this.first_dataGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(dataGridView1_EditingControlShowing);
+            this.first_dataGridView.KeyDown += new KeyEventHandler(DataGridView_KeyPress);
+            this.first_dataGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(dataGridView_EditingControlShowing);
             // 
             // Column1
             // 
@@ -275,6 +276,8 @@ namespace Client_WindowsForms
             this.tenth_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.tenth_dataGridView.Size = new System.Drawing.Size(979, 53);
             this.tenth_dataGridView.TabIndex = 36;
+            this.tenth_dataGridView.KeyDown += new KeyEventHandler(DataGridView_KeyPress);
+            this.tenth_dataGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(dataGridView_EditingControlShowing);
             this.tenth_dataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_CellEndEdit);
             // 
             // dataGridViewTextBoxColumn18
@@ -332,6 +335,8 @@ namespace Client_WindowsForms
             this.ninth_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.ninth_dataGridView.Size = new System.Drawing.Size(978, 53);
             this.ninth_dataGridView.TabIndex = 34;
+            this.ninth_dataGridView.KeyDown += new KeyEventHandler(DataGridView_KeyPress);
+            this.ninth_dataGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(dataGridView_EditingControlShowing);
             this.ninth_dataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_CellEndEdit);
             // 
             // dataGridViewTextBoxColumn13
@@ -380,6 +385,8 @@ namespace Client_WindowsForms
             this.eighth_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.eighth_dataGridView.Size = new System.Drawing.Size(978, 76);
             this.eighth_dataGridView.TabIndex = 33;
+            this.eighth_dataGridView.KeyDown += new KeyEventHandler(DataGridView_KeyPress);
+            this.eighth_dataGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(dataGridView_EditingControlShowing);
             this.eighth_dataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_CellEndEdit);
             // 
             // Column18
@@ -445,6 +452,8 @@ namespace Client_WindowsForms
             this.seventh_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.seventh_dataGridView.Size = new System.Drawing.Size(978, 53);
             this.seventh_dataGridView.TabIndex = 31;
+            this.seventh_dataGridView.KeyDown += new KeyEventHandler(DataGridView_KeyPress);
+            this.seventh_dataGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(dataGridView_EditingControlShowing);
             this.seventh_dataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_CellEndEdit);
             // 
             // dataGridViewTextBoxColumn10
@@ -503,6 +512,8 @@ namespace Client_WindowsForms
             this.sixth_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.sixth_dataGridView.Size = new System.Drawing.Size(978, 53);
             this.sixth_dataGridView.TabIndex = 29;
+            this.sixth_dataGridView.KeyDown += new KeyEventHandler(DataGridView_KeyPress);
+            this.sixth_dataGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(dataGridView_EditingControlShowing);
             this.sixth_dataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_CellEndEdit);
             // 
             // Column14
@@ -547,6 +558,8 @@ namespace Client_WindowsForms
             this.fifth_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.fifth_dataGridView.Size = new System.Drawing.Size(978, 53);
             this.fifth_dataGridView.TabIndex = 27;
+            this.fifth_dataGridView.KeyDown += new KeyEventHandler(DataGridView_KeyPress);
+            this.fifth_dataGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(dataGridView_EditingControlShowing);
             this.fifth_dataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_CellEndEdit);
             // 
             // dataGridViewTextBoxColumn5
@@ -626,6 +639,8 @@ namespace Client_WindowsForms
             this.fourth_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.fourth_dataGridView.Size = new System.Drawing.Size(978, 76);
             this.fourth_dataGridView.TabIndex = 25;
+            this.fourth_dataGridView.KeyDown += new KeyEventHandler(DataGridView_KeyPress);
+            this.fourth_dataGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(dataGridView_EditingControlShowing);
             this.fourth_dataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_CellEndEdit);
             // 
             // dataGridViewTextBoxColumn1
@@ -709,6 +724,8 @@ namespace Client_WindowsForms
             this.third_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.third_dataGridView.Size = new System.Drawing.Size(978, 76);
             this.third_dataGridView.TabIndex = 22;
+            this.third_dataGridView.KeyDown += new KeyEventHandler(DataGridView_KeyPress);
+            this.third_dataGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(dataGridView_EditingControlShowing);
             this.third_dataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_CellEndEdit);
             // 
             // Column9
@@ -775,6 +792,8 @@ namespace Client_WindowsForms
             this.second_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.second_dataGridView.Size = new System.Drawing.Size(978, 53);
             this.second_dataGridView.TabIndex = 7;
+            this.second_dataGridView.KeyDown += new KeyEventHandler(DataGridView_KeyPress);
+            this.second_dataGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(dataGridView_EditingControlShowing);
             this.second_dataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_CellEndEdit);
             // 
             // Column5
@@ -916,10 +935,10 @@ namespace Client_WindowsForms
             // 
             this.comboBoxQuarter.FormattingEnabled = true;
             this.comboBoxQuarter.Items.AddRange(new object[] {
-            "1 - первый",
-            "2 - второй",
-            "3 - третий",
-            "4 - четвёртый"});
+            "первый",
+            "второй",
+            "третий",
+            "четвёртый"});
             this.comboBoxQuarter.Location = new System.Drawing.Point(85, 6);
             this.comboBoxQuarter.Name = "comboBoxQuarter";
             this.comboBoxQuarter.Size = new System.Drawing.Size(127, 24);
