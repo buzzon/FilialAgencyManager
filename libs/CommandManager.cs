@@ -55,6 +55,10 @@ namespace Libs
                 var message = $"Данных для \"{subsidiary}\" не обнаружено.";
                 NetManager.Send(stream, NetManager.ToBytes(message));
                 Console.WriteLine("{0}: {1}", clientIp, message);
+
+                var annualReport = new QuaterDataSerialize();
+                NetManager.Send(stream, annualReport.Serialize());
+
             }
             else
             {

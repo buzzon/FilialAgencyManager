@@ -125,9 +125,13 @@ namespace Client_WindowsForms
 
         private void ButtonDownloadAnnualReport_Click(object sender, EventArgs e)
         {
-            try
+            if (comboBoxSubsidiary.SelectedItem == null)
             {
-                NetManager.Send(_stream, NetManager.ToBytes(comboBoxSubsidiary.SelectedItem.ToString()),
+                MessageBox.Show("Данного филиала не существует.");
+                return;
+            }
+
+            NetManager.Send(_stream, NetManager.ToBytes(comboBoxSubsidiary.SelectedItem.ToString()),
                                                             CommandManager.Commands.AnnualReport);
 
                 var input = NetManager.Receive(_client, _stream);
@@ -136,6 +140,9 @@ namespace Client_WindowsForms
                 var annualReport = NetManager.GetData(NetManager.Receive(_client, _stream));
                 var annualReportData = new QuaterDataSerialize();
                 annualReportData = annualReportData.Deserialize(annualReport);
+
+                if (annualReportData.Tables == null)
+                    return;
 
                 for (var i = 0; i < Tables.Length; i++)
                 {
@@ -151,11 +158,6 @@ namespace Client_WindowsForms
                         Tables[i].Columns[j].SortMode = _oldTables[i].Columns[j].SortMode;
                     }
                 }
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Данного филиала не существует.");
-            }
         }
 
         private void buttonSaveExcel_Click(object sender, EventArgs e)
