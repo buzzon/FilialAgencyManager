@@ -45,6 +45,7 @@ namespace Libs
 
         public static byte[] GetData(byte[] array)
         {
+
             var newArray = new byte[array.Length - 1];
 
             for (var i = 0; i < newArray.Length; i++)

@@ -9,7 +9,6 @@ namespace Server
     internal class ServerProgram
     {
         private const int Port = 8888;
-        private const string Address = "127.0.0.1";
 
         private static TcpListener _listener;
 
@@ -17,7 +16,7 @@ namespace Server
         {
             try
             {
-                _listener = new TcpListener(IPAddress.Parse(Address), Port);
+                _listener = new TcpListener(IPAddress.Any, Port);
                 _listener.Start();
                 Console.WriteLine("Ожидание подключений...");
 
