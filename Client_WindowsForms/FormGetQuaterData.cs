@@ -10,11 +10,10 @@ namespace Client_WindowsForms
 
         private readonly System.Net.Sockets.TcpClient _client;
         private readonly System.Net.Sockets.NetworkStream _stream;
-        private Form _mainForm;
 
-        public FormGetQuaterData(System.Net.Sockets.TcpClient client , Form mainForm)
+        public FormGetQuaterData(System.Net.Sockets.TcpClient client, Form mainForm)
         {
-            _mainForm = mainForm;
+            MainForm = mainForm;
             InitializeComponent();
 
             _client = client;
@@ -36,6 +35,7 @@ namespace Client_WindowsForms
                         _oldTables[i].Columns[j].AutoSizeMode = Tables[i].Columns[j].AutoSizeMode;
                         _oldTables[i].Columns[j].ReadOnly = Tables[i].Columns[j].ReadOnly;
                         _oldTables[i].Columns[j].SortMode = Tables[i].Columns[j].SortMode;
+                        _oldTables[i].Columns[j].DefaultCellStyle = Tables[i].Columns[j].DefaultCellStyle;
                     }
                 }
             }
@@ -62,14 +62,12 @@ namespace Client_WindowsForms
 
         private void dataGridView_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
-            if (((DataGridView)sender).CurrentCell.ColumnIndex == 1)
-            {
-                TextBox tb = (TextBox)e.Control;
-                tb.KeyPress += new KeyPressEventHandler(tb_KeyPress);
-            }
+            if (((DataGridView)sender).CurrentCell.ColumnIndex != 1) return;
+            var tb = (TextBox)e.Control;
+            tb.KeyPress += tb_KeyPress;
         }
 
-        private void tb_KeyPress(object sender, KeyPressEventArgs e)
+        private static void tb_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!(char.IsDigit(e.KeyChar) || e.KeyChar == '.' || char.IsControl(e.KeyChar)))
                 e.Handled = true;
@@ -95,21 +93,21 @@ namespace Client_WindowsForms
 
         private void ButtonSend_Click(object sender, EventArgs e)
         {
-            try
+            if (comboBoxSubsidiary.SelectedItem == null)
             {
-                var quaterData = new QuaterDataSerialize(comboBoxSubsidiary.SelectedItem.ToString(), comboBoxQuarter.SelectedItem.ToString(), Tables, Titles);
-                NetManager.Send(_stream, quaterData.Serialize(), CommandManager.Commands.QuaterDataSave);
+                MessageBox.Show(@"Не указан квартал или филиал.");
+                return;
+            }
 
-                var input = NetManager.Receive(_client, _stream);
-                MessageBox.Show(NetManager.ToString(NetManager.GetData(input)));
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Не указан квартал или филиал.");
-            }
+            var quaterData = new QuaterDataSerialize(comboBoxSubsidiary.SelectedItem.ToString(), comboBoxQuarter.SelectedItem.ToString(), Tables, Titles);
+            NetManager.Send(_stream, quaterData.Serialize(), CommandManager.Commands.QuaterDataSave);
+
+            var input = NetManager.Receive(_client, _stream);
+            MessageBox.Show(NetManager.ToString(NetManager.GetData(input)));
+
         }
 
-        private DataGridView[] Tables => new [] {
+        private DataGridView[] Tables => new[] {
             first_dataGridView,
             second_dataGridView,
             third_dataGridView,
@@ -121,9 +119,9 @@ namespace Client_WindowsForms
             ninth_dataGridView,
             tenth_dataGridView };
 
-        private DataGridView[] _oldTables;
+        private readonly DataGridView[] _oldTables;
 
-        private Label[] Titles => new [] {
+        private Label[] Titles => new[] {
             label1,
             label2,
             label3,
@@ -134,38 +132,43 @@ namespace Client_WindowsForms
             label8,
             label9 };
 
+        public Form MainForm { get; set; }
+
         private void ButtonDownloadAnnualReport_Click(object sender, EventArgs e)
         {
-            try
+            if (comboBoxSubsidiary.SelectedItem == null)
             {
-                NetManager.Send(_stream, NetManager.ToBytes(comboBoxSubsidiary.SelectedItem.ToString()),
+                MessageBox.Show(@"Данного филиала не существует.");
+                return;
+            }
+
+            NetManager.Send(_stream, NetManager.ToBytes(comboBoxSubsidiary.SelectedItem.ToString()),
                                                             CommandManager.Commands.AnnualReport);
 
-                var input = NetManager.Receive(_client, _stream);
-                MessageBox.Show(NetManager.ToString(NetManager.GetData(input)));
+            var input = NetManager.Receive(_client, _stream);
+            MessageBox.Show(NetManager.ToString(NetManager.GetData(input)));
 
-                var annualReport = NetManager.GetData(NetManager.Receive(_client, _stream));
-                var annualReportData = new QuaterDataSerialize();
-                annualReportData = annualReportData.Deserialize(annualReport);
+            var annualReport = NetManager.GetData(NetManager.Receive(_client, _stream));
+            var annualReportData = new QuaterDataSerialize();
+            annualReportData = annualReportData.Deserialize(annualReport);
 
-                for (var i = 0; i < Tables.Length; i++)
-                {
-                    Tables[i].Columns.Clear();
-                    Tables[i].DataSource = annualReportData.Tables[i];
-                    Tables[i].ColumnHeadersHeightSizeMode = _oldTables[i].ColumnHeadersHeightSizeMode;
-                    for (var j = 0; j < Tables[i].Columns.Count; j++)
-                    {
-                        Tables[i].Columns[j].Width = _oldTables[i].Columns[j].Width;
-                        Tables[i].Columns[j].HeaderText = _oldTables[i].Columns[j].HeaderText;
-                        Tables[i].Columns[j].AutoSizeMode = _oldTables[i].Columns[j].AutoSizeMode;
-                        Tables[i].Columns[j].ReadOnly = _oldTables[i].Columns[j].ReadOnly;
-                        Tables[i].Columns[j].SortMode = _oldTables[i].Columns[j].SortMode;
-                    }
-                }
-            }
-            catch (Exception)
+            if (annualReportData.Tables == null)
+                return;
+
+            for (var i = 0; i < Tables.Length; i++)
             {
-                MessageBox.Show("Данного филиала не существует.");
+                Tables[i].Columns.Clear();
+                Tables[i].DataSource = annualReportData.Tables[i];
+                Tables[i].ColumnHeadersHeightSizeMode = _oldTables[i].ColumnHeadersHeightSizeMode;
+                for (var j = 0; j < Tables[i].Columns.Count; j++)
+                {
+                    Tables[i].Columns[j].Width = _oldTables[i].Columns[j].Width;
+                    Tables[i].Columns[j].HeaderText = _oldTables[i].Columns[j].HeaderText;
+                    Tables[i].Columns[j].AutoSizeMode = _oldTables[i].Columns[j].AutoSizeMode;
+                    Tables[i].Columns[j].ReadOnly = _oldTables[i].Columns[j].ReadOnly;
+                    Tables[i].Columns[j].SortMode = _oldTables[i].Columns[j].SortMode;
+                    Tables[i].Columns[j].DefaultCellStyle = _oldTables[i].Columns[j].DefaultCellStyle;
+                }
             }
         }
 
