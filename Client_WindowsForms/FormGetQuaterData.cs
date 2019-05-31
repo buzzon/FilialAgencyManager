@@ -123,13 +123,14 @@ namespace Client_WindowsForms
 
             var item = comboBoxSubsidiary.SelectedItem;
             LoadSubsidiaryInCombobox();
+            comboBoxSubsidiary.SelectedItem = item;
             if (!comboBoxSubsidiary.Items.Contains(item))
             {
                 MessageBox.Show(@"Филиал был удалён.");
                 return;
             }
             
-            var quaterData = new QuaterDataSerialize(item.ToString(), item.ToString(), Tables, Titles);
+            var quaterData = new QuaterDataSerialize(item.ToString(), comboBoxQuarter.SelectedItem.ToString(), Tables, Titles);
             NetManager.Send(_stream, quaterData.Serialize(), CommandManager.Commands.QuaterDataSave);
 
             var input = NetManager.Receive(_client, _stream);
@@ -171,10 +172,24 @@ namespace Client_WindowsForms
                 return;
             }
 
-            NetManager.Send(_stream, NetManager.ToBytes(comboBoxSubsidiary.SelectedItem.ToString()),
-                                                            CommandManager.Commands.AnnualReport);
+            var item = comboBoxSubsidiary.SelectedItem;
+            LoadSubsidiaryInCombobox();
+            comboBoxSubsidiary.SelectedItem = item;
+            if (!comboBoxSubsidiary.Items.Contains(item))
+            {
+                MessageBox.Show(@"Филиал был удалён.");
+                return;
+            }
 
+            NetManager.Send(_stream, NetManager.ToBytes(item.ToString()),
+                                                            CommandManager.Commands.AnnualReport);
             var input = NetManager.Receive(_client, _stream);
+            if (input.Length == 0)
+            {
+                MessageBox.Show("Данных о филиале не обнаружено.");
+                return;
+            }
+
             MessageBox.Show(NetManager.ToString(NetManager.GetData(input)));
 
             var annualReport = NetManager.GetData(NetManager.Receive(_client, _stream));
@@ -200,7 +215,7 @@ namespace Client_WindowsForms
                 }
             }
 
-            LoadSubsidiaryInCombobox();
+
         }
 
         private void buttonSaveExcel_Click(object sender, EventArgs e)
