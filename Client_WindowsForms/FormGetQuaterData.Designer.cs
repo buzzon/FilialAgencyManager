@@ -951,7 +951,7 @@ namespace Client_WindowsForms
             // labelYear
             // 
             this.labelYear.AutoSize = true;
-            this.labelYear.Location = new System.Drawing.Point(10, 9);
+            this.labelYear.Location = new System.Drawing.Point(12, 9);
             this.labelYear.Name = "labelYear";
             this.labelYear.Size = new System.Drawing.Size(36, 17);
             this.labelYear.TabIndex = 30;
@@ -959,15 +959,16 @@ namespace Client_WindowsForms
             // 
             // comboBoxYear
             // 
+            this.comboBoxYear.Enabled = false;
             this.comboBoxYear.FormattingEnabled = true;
             this.comboBoxYear.Items.AddRange(new object[] {
             "первый",
             "второй",
             "третий",
             "четвёртый"});
-            this.comboBoxYear.Location = new System.Drawing.Point(52, 6);
+            this.comboBoxYear.Location = new System.Drawing.Point(54, 6);
             this.comboBoxYear.Name = "comboBoxYear";
-            this.comboBoxYear.Size = new System.Drawing.Size(86, 24);
+            this.comboBoxYear.Size = new System.Drawing.Size(85, 24);
             this.comboBoxYear.TabIndex = 31;
             // 
             // FormGetQuaterData

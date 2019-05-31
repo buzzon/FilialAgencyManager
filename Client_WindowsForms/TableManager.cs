@@ -73,7 +73,7 @@ namespace Client_WindowsForms
                         tables[0][3, i].Value = 0;
                         continue;
                     }
-                    tables[0][3, i].Value = parameters[0] / parameters[1] * 366;
+                    tables[0][3, i].Value = Math.Round(parameters[0] / parameters[1] * 366, 2);
                 }
             };
 
@@ -87,7 +87,7 @@ namespace Client_WindowsForms
                     return;
                 }
 
-                tables[1][2, 0].Value = parameters[0] / parameters[1] * 100;
+                tables[1][2, 0].Value = Math.Round(parameters[0] / parameters[1] * 100,2);
                 var cellValue = (double)tables[1][2, 0].Value;
                 if (cellValue >= 120)
                     tables[1][3, 0].Value = 6;
@@ -114,11 +114,10 @@ namespace Client_WindowsForms
                         tables[2][3, i].Value = 0;
                         continue;
                     }
-                    tables[2][3, i].Value = (double)parameters[0] / parameters[1];
+                    tables[2][3, i].Value = Math.Round((double)parameters[0] / parameters[1],2);
                     documentsCount += parameters[1];
                 }
-                tables[6][1, 0].Value = documentsCount;
-                FillTable(tables[6]);
+
             };
 
             tablesFillers[3] = () =>
@@ -131,11 +130,16 @@ namespace Client_WindowsForms
                         tables[3][4, i].Value = 0;
                         continue;
                     }
-                    tables[3][4, i].Value = (double)parameters[0] / parameters[1] * parameters[2] * 100;
+                    tables[3][4, i].Value = Math.Round((double)parameters[0] / parameters[1] * parameters[2] * 100,2);
                 }
                 tables[4][0, 0].Value = tables[3][2, 0].Value;
                 tables[4][1, 0].Value = tables[3][2, 1].Value;
+                var cellsLocal = new[] { tables[3][2, 0], tables[3][2, 1]};
+                TryParseCells(cellsLocal, out int[] parametersLocal);
+                tables[6][1, 0].Value = parametersLocal[0] + parametersLocal[1];
                 FillTable(tables[4]);
+
+
             };
 
             tablesFillers[4] = () =>
@@ -146,7 +150,9 @@ namespace Client_WindowsForms
                     tables[4][4, 0].Value = 0;
                     return;
                 }
-                tables[4][4, 0].Value = (double)(parameters[0] + parameters[1]) / parameters[2];
+                tables[4][4, 0].Value = Math.Round((double)(parameters[0] + parameters[1]) / parameters[3],2);
+               
+                FillTable(tables[6]);
             };
 
             tablesFillers[5] = () => { };
@@ -159,7 +165,7 @@ namespace Client_WindowsForms
                     tables[6][2, 0].Value = 0;
                     return;
                 }
-                tables[6][2, 0].Value = (double)parameters[0] / parameters[1] * 1000000;
+                tables[6][2, 0].Value = Math.Round((double)parameters[0] / parameters[1] * 1000000,2);
             };
 
             tablesFillers[7] = () =>
@@ -172,7 +178,7 @@ namespace Client_WindowsForms
                         tables[7][3, i].Value = 0;
                         continue;
                     }
-                    tables[7][3, i].Value = (double)parameters[0] / parameters[1] * 100;
+                    tables[7][3, i].Value = Math.Round((double)parameters[0] / parameters[1] * 100,2);
                 }
             };
 
@@ -184,7 +190,7 @@ namespace Client_WindowsForms
                     tables[8][2, 0].Value = 0;
                     return;
                 }
-                tables[8][2, 0].Value = (double)parameters[0] / parameters[1] * 100;
+                tables[8][2, 0].Value = Math.Round((double)parameters[0] / parameters[1] * 100 / 4,2);
             };
 
             tablesFillers[9] = () =>
@@ -195,7 +201,7 @@ namespace Client_WindowsForms
                     tables[9][2, 0].Value = 0;
                     return;
                 }
-                tables[9][2, 0].Value = (double)parameters[0] / parameters[1] * 100;
+                tables[9][2, 0].Value = Math.Round((double)parameters[0] / parameters[1] * 100,2);
             };
 
             return tablesFillers;

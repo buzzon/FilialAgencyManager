@@ -31,7 +31,15 @@ namespace Client_WindowsForms
         private static string GetIp()
         {
             if (!File.Exists(@"ip.ini"))
-                throw new ArgumentException(@"Файл ip.ini не обнаружен");
+            {
+                var f = File.CreateText("ip.ini");
+                f.Close();
+
+                using (StreamWriter sw = new StreamWriter("ip.ini", false, System.Text.Encoding.Default))
+                {
+                    sw.WriteLine("127.0.0.1");
+                }
+            }
 
             string ip;
             using (var sr = new StreamReader(@"ip.ini", Encoding.Default))

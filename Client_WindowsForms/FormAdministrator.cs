@@ -37,6 +37,8 @@ namespace Client_WindowsForms
         {
             try
             {
+                if (textBoxSubsidiaryAdd.Text == "")
+                    return;
                 NetManager.Send(_stream, NetManager.ToBytes(textBoxSubsidiaryAdd.Text), CommandManager.Commands.SubsidiaryAdd);
                 var input = NetManager.Receive(_client, _stream);
                 var message = NetManager.ToString(NetManager.GetData(input));
@@ -82,6 +84,7 @@ namespace Client_WindowsForms
             MessageBox.Show(message);
 
             LoadSubsidiaryInCombobox();
+            comboBoxSubsidiary.Text = "";
         }
     }
 }
