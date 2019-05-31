@@ -219,16 +219,20 @@ namespace Client_WindowsForms
 
         private void buttonSaveExcel_Click(object sender, EventArgs e)
         {
-            ExcelManager.Create(false);
-            ExcelManager.Fill(Tables, comboBoxQuarter.Text, comboBoxSubsidiary.Text);
+            ExcelManager.Create();
+            ExcelManager.Fill(Tables, Titles, comboBoxQuarter.Text, comboBoxSubsidiary.Text);
             ExcelManager.ExportToExcel();
 
         }
 
+
         private void buttonOpenExcel_Click(object sender, EventArgs e)
         {
-            ExcelManager.Create(true);
-            ExcelManager.Fill(Tables, comboBoxQuarter.Text, comboBoxSubsidiary.Text);
+            this.WindowState = FormWindowState.Minimized;
+            ExcelManager.Create();
+            ExcelManager.Fill(Tables, Titles, comboBoxQuarter.Text, comboBoxSubsidiary.Text);
+            this.WindowState = FormWindowState.Normal;
+            ExcelManager.Open();
         }
     }
 }
