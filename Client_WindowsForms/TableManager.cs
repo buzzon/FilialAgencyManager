@@ -73,7 +73,7 @@ namespace Client_WindowsForms
                         tables[0][3, i].Value = 0;
                         continue;
                     }
-                    tables[0][3, i].Value = parameters[0] / parameters[1] * 366;
+                    tables[0][3, i].Value = Math.Round(parameters[0] / parameters[1] * 366,2);
                 }
             };
 

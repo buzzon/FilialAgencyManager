@@ -20,8 +20,6 @@ namespace Client_WindowsForms
                 _client = client;
                 _stream = client.GetStream();
 
-
-
                 _tableManager = new TableManager(Tables);
                 TableManager.InitializeTables(Tables);
 
@@ -215,6 +213,7 @@ namespace Client_WindowsForms
                 }
             }
 
+            comboBoxQuarter.Text = "Годовой";
 
         }
 
