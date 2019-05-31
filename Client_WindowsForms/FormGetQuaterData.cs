@@ -228,10 +228,10 @@ namespace Client_WindowsForms
 
         private void buttonOpenExcel_Click(object sender, EventArgs e)
         {
-            this.WindowState = FormWindowState.Minimized;
+            buttonOpenExcel.Enabled = false;
             ExcelManager.Create();
             ExcelManager.Fill(Tables, Titles, comboBoxQuarter.Text, comboBoxSubsidiary.Text);
-            this.WindowState = FormWindowState.Normal;
+            buttonOpenExcel.Enabled = true;
             ExcelManager.Open();
         }
     }
